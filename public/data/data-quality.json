@@ -1,0 +1,40 @@
+{
+  "report_year": 2023,
+  "raw_current_rows": 33684,
+  "raw_prior_rows": 30485,
+  "unique_current_property_ids": 33062,
+  "screened_current_cohort_rows": 5446,
+  "clean_matched_buildings": 2976,
+  "demo_buildings": 30,
+  "demo_by_type": {
+    "Technology": 5,
+    "Healthcare": 5,
+    "Commercial": 5,
+    "Residential": 5,
+    "Industrial": 5,
+    "Institutional": 5
+  },
+  "matched_by_type": {
+    "Technology": 51,
+    "Healthcare": 6,
+    "Commercial": 308,
+    "Residential": 2492,
+    "Industrial": 56,
+    "Institutional": 63
+  },
+  "weather": {
+    "weather_key": "USW00094728:2023",
+    "station_id": "USW00094728",
+    "station_name": "NY CITY CENTRAL PARK, NY US",
+    "report_year": 2023,
+    "weather_region": "New York City regional station proxy",
+    "hot_days": 12,
+    "freeze_days": 23,
+    "mean_temperature_c": 14.449,
+    "max_temperature_c": 33.9,
+    "min_temperature_c": -16.0,
+    "observed_days": 365,
+    "source_id": "noaa_ghcnd_2023"
+  },
+  "benchmark_version": "nyc-2023-v1"
+}

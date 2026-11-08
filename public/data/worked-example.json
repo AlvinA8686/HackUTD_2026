@@ -1,0 +1,893 @@
+{
+  "note": "Illustrative arithmetic example; references and weather are scenario inputs, not source observations.",
+  "results": [
+    {
+      "building": {
+        "building_id": "worked-example",
+        "name": "Worked example (illustrative inputs)",
+        "building_type": "Technology",
+        "report_year": 2023,
+        "annual_revenue_usd": 100000000,
+        "revenue_source": "scenario",
+        "electricity_kwh_sqft": 60,
+        "electricity_change_pct": 30,
+        "water_gal_sqft": 75,
+        "water_change_pct": 10,
+        "thermal_kbtu_sqft": 90,
+        "building_age_years": 60,
+        "hot_days": 30,
+        "freeze_days": 60,
+        "reference_electricity_kwh_sqft": 30,
+        "reference_water_gal_sqft": 50,
+        "reference_thermal_kbtu_sqft": 60,
+        "reference_label": "Illustrative fixed references"
+      },
+      "scores": {
+        "electricity": 90,
+        "plumbing": 48.75,
+        "hvacBase": 55.41666666666667,
+        "hvac": 67.9,
+        "cascadeBoost": 12.48333333333333,
+        "revenue": 50,
+        "overall": 68.065,
+        "band": "High",
+        "weights": {
+          "electricity": 0.42,
+          "plumbing": 0.42,
+          "hvac": 0.1,
+          "revenue": 0.06
+        },
+        "contributions": {
+          "electricity": 37.8,
+          "plumbing": 20.474999999999998,
+          "hvac": 6.790000000000001,
+          "revenue": 3
+        },
+        "drivers": [
+          {
+            "system": "Electricity",
+            "parameter": "electricity_kwh_sqft",
+            "label": "Electricity vs peer",
+            "value": 2,
+            "normalized": 1,
+            "points": 75,
+            "message": "2.00× the Illustrative fixed references electricity reference. Elevated use can indicate unusual load or inefficiency.",
+            "action": "Review interval demand and electrical capacity with the facility engineer; check for changed occupancy or process load."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_gal_sqft",
+            "label": "Water vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 43.75,
+            "message": "1.50× the Illustrative fixed references water reference. High use warrants investigation, not a leak diagnosis.",
+            "action": "Compare after-hours water flow and meter boundaries; inspect fixtures and irrigation for unexplained demand."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "thermal_kbtu_sqft",
+            "label": "Thermal load vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 37.91666666666667,
+            "message": "1.50× the Illustrative fixed references non-electric thermal reference; process and cooking loads may be included.",
+            "action": "Review heating/cooling schedules and thermal meters; separate process loads before assessing HVAC performance."
+          },
+          {
+            "system": "Electricity",
+            "parameter": "electricity_change_pct",
+            "label": "Electricity trend",
+            "value": 30,
+            "normalized": 0.6,
+            "points": 15,
+            "message": "30.0% year-over-year electricity intensity change.",
+            "action": "Reconcile meter coverage, occupied hours and recent equipment changes before inspecting loads."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "electricity_dependency",
+            "label": "Electrical cascade",
+            "value": 90,
+            "normalized": 0.27999999999999997,
+            "points": 12.48333333333333,
+            "message": "Electricity priority above 50 adds 12.5 HVAC points through the one-way dependency.",
+            "action": "Review power continuity for HVAC controls and critical cooling; verify backup circuits and restart procedures."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "building_age_years",
+            "label": "Building vintage",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 7.5,
+            "message": "Building age is 60 years; equipment replacement history is unknown.",
+            "action": "Obtain equipment age, envelope condition and maintenance history to replace this weak vintage proxy."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_change_pct",
+            "label": "Water trend",
+            "value": 10,
+            "normalized": 0.2,
+            "points": 5,
+            "message": "10.0% year-over-year water intensity change.",
+            "action": "Reconcile annual meter totals and occupancy; investigate persistent unexplained water increases."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "hot_days",
+            "label": "Heat exposure",
+            "value": 30,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "30 days with a regional daily maximum of at least 32°C.",
+            "action": "Check cooling capacity, filters and heat-wave readiness before the hot season."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "freeze_days",
+            "label": "Cold exposure",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "60 days with a regional daily minimum below 0°C.",
+            "action": "Review heating reliability and cold-weather controls with the facilities team."
+          }
+        ],
+        "warnings": [
+          "Priority index based on screening proxies; not a calibrated failure probability or a safety certification.",
+          "Revenue is a user-supplied or demonstration scenario, not verified client financial data."
+        ],
+        "reference": {
+          "electricity_kwh_sqft": 30,
+          "water_gal_sqft": 50,
+          "thermal_kbtu_sqft": 60,
+          "label": "Illustrative fixed references",
+          "basis": "supplied"
+        },
+        "modelVersion": "nexus-priority-v1.0"
+      }
+    },
+    {
+      "building": {
+        "building_id": "worked-example",
+        "name": "Worked example (illustrative inputs)",
+        "building_type": "Healthcare",
+        "report_year": 2023,
+        "annual_revenue_usd": 100000000,
+        "revenue_source": "scenario",
+        "electricity_kwh_sqft": 60,
+        "electricity_change_pct": 30,
+        "water_gal_sqft": 75,
+        "water_change_pct": 10,
+        "thermal_kbtu_sqft": 90,
+        "building_age_years": 60,
+        "hot_days": 30,
+        "freeze_days": 60,
+        "reference_electricity_kwh_sqft": 30,
+        "reference_water_gal_sqft": 50,
+        "reference_thermal_kbtu_sqft": 60,
+        "reference_label": "Illustrative fixed references"
+      },
+      "scores": {
+        "electricity": 90,
+        "plumbing": 48.75,
+        "hvacBase": 55.41666666666667,
+        "hvac": 67.9,
+        "cascadeBoost": 12.48333333333333,
+        "revenue": 50,
+        "overall": 68.875,
+        "band": "High",
+        "weights": {
+          "electricity": 0.37,
+          "plumbing": 0.32,
+          "hvac": 0.25,
+          "revenue": 0.06
+        },
+        "contributions": {
+          "electricity": 33.3,
+          "plumbing": 15.6,
+          "hvac": 16.975,
+          "revenue": 3
+        },
+        "drivers": [
+          {
+            "system": "Electricity",
+            "parameter": "electricity_kwh_sqft",
+            "label": "Electricity vs peer",
+            "value": 2,
+            "normalized": 1,
+            "points": 75,
+            "message": "2.00× the Illustrative fixed references electricity reference. Elevated use can indicate unusual load or inefficiency.",
+            "action": "Review interval demand and electrical capacity with the facility engineer; check for changed occupancy or process load."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_gal_sqft",
+            "label": "Water vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 43.75,
+            "message": "1.50× the Illustrative fixed references water reference. High use warrants investigation, not a leak diagnosis.",
+            "action": "Compare after-hours water flow and meter boundaries; inspect fixtures and irrigation for unexplained demand."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "thermal_kbtu_sqft",
+            "label": "Thermal load vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 37.91666666666667,
+            "message": "1.50× the Illustrative fixed references non-electric thermal reference; process and cooking loads may be included.",
+            "action": "Review heating/cooling schedules and thermal meters; separate process loads before assessing HVAC performance."
+          },
+          {
+            "system": "Electricity",
+            "parameter": "electricity_change_pct",
+            "label": "Electricity trend",
+            "value": 30,
+            "normalized": 0.6,
+            "points": 15,
+            "message": "30.0% year-over-year electricity intensity change.",
+            "action": "Reconcile meter coverage, occupied hours and recent equipment changes before inspecting loads."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "electricity_dependency",
+            "label": "Electrical cascade",
+            "value": 90,
+            "normalized": 0.27999999999999997,
+            "points": 12.48333333333333,
+            "message": "Electricity priority above 50 adds 12.5 HVAC points through the one-way dependency.",
+            "action": "Review power continuity for HVAC controls and critical cooling; verify backup circuits and restart procedures."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "building_age_years",
+            "label": "Building vintage",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 7.5,
+            "message": "Building age is 60 years; equipment replacement history is unknown.",
+            "action": "Obtain equipment age, envelope condition and maintenance history to replace this weak vintage proxy."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_change_pct",
+            "label": "Water trend",
+            "value": 10,
+            "normalized": 0.2,
+            "points": 5,
+            "message": "10.0% year-over-year water intensity change.",
+            "action": "Reconcile annual meter totals and occupancy; investigate persistent unexplained water increases."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "hot_days",
+            "label": "Heat exposure",
+            "value": 30,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "30 days with a regional daily maximum of at least 32°C.",
+            "action": "Check cooling capacity, filters and heat-wave readiness before the hot season."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "freeze_days",
+            "label": "Cold exposure",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "60 days with a regional daily minimum below 0°C.",
+            "action": "Review heating reliability and cold-weather controls with the facilities team."
+          }
+        ],
+        "warnings": [
+          "Priority index based on screening proxies; not a calibrated failure probability or a safety certification.",
+          "Revenue is a user-supplied or demonstration scenario, not verified client financial data."
+        ],
+        "reference": {
+          "electricity_kwh_sqft": 30,
+          "water_gal_sqft": 50,
+          "thermal_kbtu_sqft": 60,
+          "label": "Illustrative fixed references",
+          "basis": "supplied"
+        },
+        "modelVersion": "nexus-priority-v1.0"
+      }
+    },
+    {
+      "building": {
+        "building_id": "worked-example",
+        "name": "Worked example (illustrative inputs)",
+        "building_type": "Commercial",
+        "report_year": 2023,
+        "annual_revenue_usd": 100000000,
+        "revenue_source": "scenario",
+        "electricity_kwh_sqft": 60,
+        "electricity_change_pct": 30,
+        "water_gal_sqft": 75,
+        "water_change_pct": 10,
+        "thermal_kbtu_sqft": 90,
+        "building_age_years": 60,
+        "hot_days": 30,
+        "freeze_days": 60,
+        "reference_electricity_kwh_sqft": 30,
+        "reference_water_gal_sqft": 50,
+        "reference_thermal_kbtu_sqft": 60,
+        "reference_label": "Illustrative fixed references"
+      },
+      "scores": {
+        "electricity": 90,
+        "plumbing": 48.75,
+        "hvacBase": 55.41666666666667,
+        "hvac": 67.9,
+        "cascadeBoost": 12.48333333333333,
+        "revenue": 50,
+        "overall": 65.70750000000001,
+        "band": "High",
+        "weights": {
+          "electricity": 0.27,
+          "plumbing": 0.37,
+          "hvac": 0.3,
+          "revenue": 0.06
+        },
+        "contributions": {
+          "electricity": 24.3,
+          "plumbing": 18.0375,
+          "hvac": 20.37,
+          "revenue": 3
+        },
+        "drivers": [
+          {
+            "system": "Electricity",
+            "parameter": "electricity_kwh_sqft",
+            "label": "Electricity vs peer",
+            "value": 2,
+            "normalized": 1,
+            "points": 75,
+            "message": "2.00× the Illustrative fixed references electricity reference. Elevated use can indicate unusual load or inefficiency.",
+            "action": "Review interval demand and electrical capacity with the facility engineer; check for changed occupancy or process load."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_gal_sqft",
+            "label": "Water vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 43.75,
+            "message": "1.50× the Illustrative fixed references water reference. High use warrants investigation, not a leak diagnosis.",
+            "action": "Compare after-hours water flow and meter boundaries; inspect fixtures and irrigation for unexplained demand."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "thermal_kbtu_sqft",
+            "label": "Thermal load vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 37.91666666666667,
+            "message": "1.50× the Illustrative fixed references non-electric thermal reference; process and cooking loads may be included.",
+            "action": "Review heating/cooling schedules and thermal meters; separate process loads before assessing HVAC performance."
+          },
+          {
+            "system": "Electricity",
+            "parameter": "electricity_change_pct",
+            "label": "Electricity trend",
+            "value": 30,
+            "normalized": 0.6,
+            "points": 15,
+            "message": "30.0% year-over-year electricity intensity change.",
+            "action": "Reconcile meter coverage, occupied hours and recent equipment changes before inspecting loads."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "electricity_dependency",
+            "label": "Electrical cascade",
+            "value": 90,
+            "normalized": 0.27999999999999997,
+            "points": 12.48333333333333,
+            "message": "Electricity priority above 50 adds 12.5 HVAC points through the one-way dependency.",
+            "action": "Review power continuity for HVAC controls and critical cooling; verify backup circuits and restart procedures."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "building_age_years",
+            "label": "Building vintage",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 7.5,
+            "message": "Building age is 60 years; equipment replacement history is unknown.",
+            "action": "Obtain equipment age, envelope condition and maintenance history to replace this weak vintage proxy."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_change_pct",
+            "label": "Water trend",
+            "value": 10,
+            "normalized": 0.2,
+            "points": 5,
+            "message": "10.0% year-over-year water intensity change.",
+            "action": "Reconcile annual meter totals and occupancy; investigate persistent unexplained water increases."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "hot_days",
+            "label": "Heat exposure",
+            "value": 30,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "30 days with a regional daily maximum of at least 32°C.",
+            "action": "Check cooling capacity, filters and heat-wave readiness before the hot season."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "freeze_days",
+            "label": "Cold exposure",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "60 days with a regional daily minimum below 0°C.",
+            "action": "Review heating reliability and cold-weather controls with the facilities team."
+          }
+        ],
+        "warnings": [
+          "Priority index based on screening proxies; not a calibrated failure probability or a safety certification.",
+          "Revenue is a user-supplied or demonstration scenario, not verified client financial data."
+        ],
+        "reference": {
+          "electricity_kwh_sqft": 30,
+          "water_gal_sqft": 50,
+          "thermal_kbtu_sqft": 60,
+          "label": "Illustrative fixed references",
+          "basis": "supplied"
+        },
+        "modelVersion": "nexus-priority-v1.0"
+      }
+    },
+    {
+      "building": {
+        "building_id": "worked-example",
+        "name": "Worked example (illustrative inputs)",
+        "building_type": "Residential",
+        "report_year": 2023,
+        "annual_revenue_usd": 100000000,
+        "revenue_source": "scenario",
+        "electricity_kwh_sqft": 60,
+        "electricity_change_pct": 30,
+        "water_gal_sqft": 75,
+        "water_change_pct": 10,
+        "thermal_kbtu_sqft": 90,
+        "building_age_years": 60,
+        "hot_days": 30,
+        "freeze_days": 60,
+        "reference_electricity_kwh_sqft": 30,
+        "reference_water_gal_sqft": 50,
+        "reference_thermal_kbtu_sqft": 60,
+        "reference_label": "Illustrative fixed references"
+      },
+      "scores": {
+        "electricity": 90,
+        "plumbing": 48.75,
+        "hvacBase": 55.41666666666667,
+        "hvac": 67.9,
+        "cascadeBoost": 12.48333333333333,
+        "revenue": 50,
+        "overall": 66.8125,
+        "band": "High",
+        "weights": {
+          "electricity": 0.32,
+          "plumbing": 0.37,
+          "hvac": 0.25,
+          "revenue": 0.06
+        },
+        "contributions": {
+          "electricity": 28.8,
+          "plumbing": 18.0375,
+          "hvac": 16.975,
+          "revenue": 3
+        },
+        "drivers": [
+          {
+            "system": "Electricity",
+            "parameter": "electricity_kwh_sqft",
+            "label": "Electricity vs peer",
+            "value": 2,
+            "normalized": 1,
+            "points": 75,
+            "message": "2.00× the Illustrative fixed references electricity reference. Elevated use can indicate unusual load or inefficiency.",
+            "action": "Review interval demand and electrical capacity with the facility engineer; check for changed occupancy or process load."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_gal_sqft",
+            "label": "Water vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 43.75,
+            "message": "1.50× the Illustrative fixed references water reference. High use warrants investigation, not a leak diagnosis.",
+            "action": "Compare after-hours water flow and meter boundaries; inspect fixtures and irrigation for unexplained demand."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "thermal_kbtu_sqft",
+            "label": "Thermal load vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 37.91666666666667,
+            "message": "1.50× the Illustrative fixed references non-electric thermal reference; process and cooking loads may be included.",
+            "action": "Review heating/cooling schedules and thermal meters; separate process loads before assessing HVAC performance."
+          },
+          {
+            "system": "Electricity",
+            "parameter": "electricity_change_pct",
+            "label": "Electricity trend",
+            "value": 30,
+            "normalized": 0.6,
+            "points": 15,
+            "message": "30.0% year-over-year electricity intensity change.",
+            "action": "Reconcile meter coverage, occupied hours and recent equipment changes before inspecting loads."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "electricity_dependency",
+            "label": "Electrical cascade",
+            "value": 90,
+            "normalized": 0.27999999999999997,
+            "points": 12.48333333333333,
+            "message": "Electricity priority above 50 adds 12.5 HVAC points through the one-way dependency.",
+            "action": "Review power continuity for HVAC controls and critical cooling; verify backup circuits and restart procedures."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "building_age_years",
+            "label": "Building vintage",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 7.5,
+            "message": "Building age is 60 years; equipment replacement history is unknown.",
+            "action": "Obtain equipment age, envelope condition and maintenance history to replace this weak vintage proxy."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_change_pct",
+            "label": "Water trend",
+            "value": 10,
+            "normalized": 0.2,
+            "points": 5,
+            "message": "10.0% year-over-year water intensity change.",
+            "action": "Reconcile annual meter totals and occupancy; investigate persistent unexplained water increases."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "hot_days",
+            "label": "Heat exposure",
+            "value": 30,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "30 days with a regional daily maximum of at least 32°C.",
+            "action": "Check cooling capacity, filters and heat-wave readiness before the hot season."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "freeze_days",
+            "label": "Cold exposure",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "60 days with a regional daily minimum below 0°C.",
+            "action": "Review heating reliability and cold-weather controls with the facilities team."
+          }
+        ],
+        "warnings": [
+          "Priority index based on screening proxies; not a calibrated failure probability or a safety certification.",
+          "Revenue is a user-supplied or demonstration scenario, not verified client financial data."
+        ],
+        "reference": {
+          "electricity_kwh_sqft": 30,
+          "water_gal_sqft": 50,
+          "thermal_kbtu_sqft": 60,
+          "label": "Illustrative fixed references",
+          "basis": "supplied"
+        },
+        "modelVersion": "nexus-priority-v1.0"
+      }
+    },
+    {
+      "building": {
+        "building_id": "worked-example",
+        "name": "Worked example (illustrative inputs)",
+        "building_type": "Industrial",
+        "report_year": 2023,
+        "annual_revenue_usd": 100000000,
+        "revenue_source": "scenario",
+        "electricity_kwh_sqft": 60,
+        "electricity_change_pct": 30,
+        "water_gal_sqft": 75,
+        "water_change_pct": 10,
+        "thermal_kbtu_sqft": 90,
+        "building_age_years": 60,
+        "hot_days": 30,
+        "freeze_days": 60,
+        "reference_electricity_kwh_sqft": 30,
+        "reference_water_gal_sqft": 50,
+        "reference_thermal_kbtu_sqft": 60,
+        "reference_label": "Illustrative fixed references"
+      },
+      "scores": {
+        "electricity": 90,
+        "plumbing": 48.75,
+        "hvacBase": 55.41666666666667,
+        "hvac": 67.9,
+        "cascadeBoost": 12.48333333333333,
+        "revenue": 50,
+        "overall": 65.56,
+        "band": "High",
+        "weights": {
+          "electricity": 0.22,
+          "plumbing": 0.32,
+          "hvac": 0.4,
+          "revenue": 0.06
+        },
+        "contributions": {
+          "electricity": 19.8,
+          "plumbing": 15.6,
+          "hvac": 27.160000000000004,
+          "revenue": 3
+        },
+        "drivers": [
+          {
+            "system": "Electricity",
+            "parameter": "electricity_kwh_sqft",
+            "label": "Electricity vs peer",
+            "value": 2,
+            "normalized": 1,
+            "points": 75,
+            "message": "2.00× the Illustrative fixed references electricity reference. Elevated use can indicate unusual load or inefficiency.",
+            "action": "Review interval demand and electrical capacity with the facility engineer; check for changed occupancy or process load."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_gal_sqft",
+            "label": "Water vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 43.75,
+            "message": "1.50× the Illustrative fixed references water reference. High use warrants investigation, not a leak diagnosis.",
+            "action": "Compare after-hours water flow and meter boundaries; inspect fixtures and irrigation for unexplained demand."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "thermal_kbtu_sqft",
+            "label": "Thermal load vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 37.91666666666667,
+            "message": "1.50× the Illustrative fixed references non-electric thermal reference; process and cooking loads may be included.",
+            "action": "Review heating/cooling schedules and thermal meters; separate process loads before assessing HVAC performance."
+          },
+          {
+            "system": "Electricity",
+            "parameter": "electricity_change_pct",
+            "label": "Electricity trend",
+            "value": 30,
+            "normalized": 0.6,
+            "points": 15,
+            "message": "30.0% year-over-year electricity intensity change.",
+            "action": "Reconcile meter coverage, occupied hours and recent equipment changes before inspecting loads."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "electricity_dependency",
+            "label": "Electrical cascade",
+            "value": 90,
+            "normalized": 0.27999999999999997,
+            "points": 12.48333333333333,
+            "message": "Electricity priority above 50 adds 12.5 HVAC points through the one-way dependency.",
+            "action": "Review power continuity for HVAC controls and critical cooling; verify backup circuits and restart procedures."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "building_age_years",
+            "label": "Building vintage",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 7.5,
+            "message": "Building age is 60 years; equipment replacement history is unknown.",
+            "action": "Obtain equipment age, envelope condition and maintenance history to replace this weak vintage proxy."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_change_pct",
+            "label": "Water trend",
+            "value": 10,
+            "normalized": 0.2,
+            "points": 5,
+            "message": "10.0% year-over-year water intensity change.",
+            "action": "Reconcile annual meter totals and occupancy; investigate persistent unexplained water increases."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "hot_days",
+            "label": "Heat exposure",
+            "value": 30,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "30 days with a regional daily maximum of at least 32°C.",
+            "action": "Check cooling capacity, filters and heat-wave readiness before the hot season."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "freeze_days",
+            "label": "Cold exposure",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "60 days with a regional daily minimum below 0°C.",
+            "action": "Review heating reliability and cold-weather controls with the facilities team."
+          }
+        ],
+        "warnings": [
+          "Priority index based on screening proxies; not a calibrated failure probability or a safety certification.",
+          "Revenue is a user-supplied or demonstration scenario, not verified client financial data."
+        ],
+        "reference": {
+          "electricity_kwh_sqft": 30,
+          "water_gal_sqft": 50,
+          "thermal_kbtu_sqft": 60,
+          "label": "Illustrative fixed references",
+          "basis": "supplied"
+        },
+        "modelVersion": "nexus-priority-v1.0"
+      }
+    },
+    {
+      "building": {
+        "building_id": "worked-example",
+        "name": "Worked example (illustrative inputs)",
+        "building_type": "Institutional",
+        "report_year": 2023,
+        "annual_revenue_usd": 100000000,
+        "revenue_source": "scenario",
+        "electricity_kwh_sqft": 60,
+        "electricity_change_pct": 30,
+        "water_gal_sqft": 75,
+        "water_change_pct": 10,
+        "thermal_kbtu_sqft": 90,
+        "building_age_years": 60,
+        "hot_days": 30,
+        "freeze_days": 60,
+        "reference_electricity_kwh_sqft": 30,
+        "reference_water_gal_sqft": 50,
+        "reference_thermal_kbtu_sqft": 60,
+        "reference_label": "Illustrative fixed references"
+      },
+      "scores": {
+        "electricity": 90,
+        "plumbing": 48.75,
+        "hvacBase": 55.41666666666667,
+        "hvac": 67.9,
+        "cascadeBoost": 12.48333333333333,
+        "revenue": 50,
+        "overall": 71.895,
+        "band": "High",
+        "weights": {
+          "electricity": 0.42,
+          "plumbing": 0.22,
+          "hvac": 0.3,
+          "revenue": 0.06
+        },
+        "contributions": {
+          "electricity": 37.8,
+          "plumbing": 10.725,
+          "hvac": 20.37,
+          "revenue": 3
+        },
+        "drivers": [
+          {
+            "system": "Electricity",
+            "parameter": "electricity_kwh_sqft",
+            "label": "Electricity vs peer",
+            "value": 2,
+            "normalized": 1,
+            "points": 75,
+            "message": "2.00× the Illustrative fixed references electricity reference. Elevated use can indicate unusual load or inefficiency.",
+            "action": "Review interval demand and electrical capacity with the facility engineer; check for changed occupancy or process load."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_gal_sqft",
+            "label": "Water vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 43.75,
+            "message": "1.50× the Illustrative fixed references water reference. High use warrants investigation, not a leak diagnosis.",
+            "action": "Compare after-hours water flow and meter boundaries; inspect fixtures and irrigation for unexplained demand."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "thermal_kbtu_sqft",
+            "label": "Thermal load vs peer",
+            "value": 1.5,
+            "normalized": 0.5833333333333334,
+            "points": 37.91666666666667,
+            "message": "1.50× the Illustrative fixed references non-electric thermal reference; process and cooking loads may be included.",
+            "action": "Review heating/cooling schedules and thermal meters; separate process loads before assessing HVAC performance."
+          },
+          {
+            "system": "Electricity",
+            "parameter": "electricity_change_pct",
+            "label": "Electricity trend",
+            "value": 30,
+            "normalized": 0.6,
+            "points": 15,
+            "message": "30.0% year-over-year electricity intensity change.",
+            "action": "Reconcile meter coverage, occupied hours and recent equipment changes before inspecting loads."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "electricity_dependency",
+            "label": "Electrical cascade",
+            "value": 90,
+            "normalized": 0.27999999999999997,
+            "points": 12.48333333333333,
+            "message": "Electricity priority above 50 adds 12.5 HVAC points through the one-way dependency.",
+            "action": "Review power continuity for HVAC controls and critical cooling; verify backup circuits and restart procedures."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "building_age_years",
+            "label": "Building vintage",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 7.5,
+            "message": "Building age is 60 years; equipment replacement history is unknown.",
+            "action": "Obtain equipment age, envelope condition and maintenance history to replace this weak vintage proxy."
+          },
+          {
+            "system": "Plumbing",
+            "parameter": "water_change_pct",
+            "label": "Water trend",
+            "value": 10,
+            "normalized": 0.2,
+            "points": 5,
+            "message": "10.0% year-over-year water intensity change.",
+            "action": "Reconcile annual meter totals and occupancy; investigate persistent unexplained water increases."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "hot_days",
+            "label": "Heat exposure",
+            "value": 30,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "30 days with a regional daily maximum of at least 32°C.",
+            "action": "Check cooling capacity, filters and heat-wave readiness before the hot season."
+          },
+          {
+            "system": "HVAC",
+            "parameter": "freeze_days",
+            "label": "Cold exposure",
+            "value": 60,
+            "normalized": 0.5,
+            "points": 5,
+            "message": "60 days with a regional daily minimum below 0°C.",
+            "action": "Review heating reliability and cold-weather controls with the facilities team."
+          }
+        ],
+        "warnings": [
+          "Priority index based on screening proxies; not a calibrated failure probability or a safety certification.",
+          "Revenue is a user-supplied or demonstration scenario, not verified client financial data."
+        ],
+        "reference": {
+          "electricity_kwh_sqft": 30,
+          "water_gal_sqft": 50,
+          "thermal_kbtu_sqft": 60,
+          "label": "Illustrative fixed references",
+          "basis": "supplied"
+        },
+        "modelVersion": "nexus-priority-v1.0"
+      }
+    }
+  ]
+}

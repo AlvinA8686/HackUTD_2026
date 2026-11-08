@@ -1,0 +1,117 @@
+{
+  "version": "nyc-2023-v1",
+  "report_year": 2023,
+  "source_id": "nyc_ll84_2023",
+  "property_types": {
+    "Data Center": {
+      "electricity_kwh_sqft": 51.447691,
+      "water_gal_sqft": 65.297296,
+      "thermal_kbtu_sqft": 19.165616,
+      "count": 56,
+      "property_type": "Data Center",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Hospital (General Medical & Surgical)": {
+      "electricity_kwh_sqft": 31.190428,
+      "water_gal_sqft": 68.63585,
+      "thermal_kbtu_sqft": 150.861424,
+      "count": 12,
+      "property_type": "Hospital (General Medical & Surgical)",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Office": {
+      "electricity_kwh_sqft": 10.157895,
+      "water_gal_sqft": 11.949204,
+      "thermal_kbtu_sqft": 22.652877,
+      "count": 575,
+      "property_type": "Office",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Multifamily Housing": {
+      "electricity_kwh_sqft": 3.929051,
+      "water_gal_sqft": 52.977612,
+      "thermal_kbtu_sqft": 58.358673,
+      "count": 4569,
+      "property_type": "Multifamily Housing",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Manufacturing/Industrial Plant": {
+      "electricity_kwh_sqft": 5.448831,
+      "water_gal_sqft": 5.050127,
+      "thermal_kbtu_sqft": 20.239533,
+      "count": 99,
+      "property_type": "Manufacturing/Industrial Plant",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "K-12 School": {
+      "electricity_kwh_sqft": 7.530894,
+      "water_gal_sqft": 14.512283,
+      "thermal_kbtu_sqft": 32.883254,
+      "count": 135,
+      "property_type": "K-12 School",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    }
+  },
+  "building_types": {
+    "Technology": {
+      "electricity_kwh_sqft": 51.447691,
+      "water_gal_sqft": 65.297296,
+      "thermal_kbtu_sqft": 19.165616,
+      "count": 56,
+      "property_type": "Data Center",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Healthcare": {
+      "electricity_kwh_sqft": 31.190428,
+      "water_gal_sqft": 68.63585,
+      "thermal_kbtu_sqft": 150.861424,
+      "count": 12,
+      "property_type": "Hospital (General Medical & Surgical)",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Commercial": {
+      "electricity_kwh_sqft": 10.157895,
+      "water_gal_sqft": 11.949204,
+      "thermal_kbtu_sqft": 22.652877,
+      "count": 575,
+      "property_type": "Office",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Residential": {
+      "electricity_kwh_sqft": 3.929051,
+      "water_gal_sqft": 52.977612,
+      "thermal_kbtu_sqft": 58.358673,
+      "count": 4569,
+      "property_type": "Multifamily Housing",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Industrial": {
+      "electricity_kwh_sqft": 5.448831,
+      "water_gal_sqft": 5.050127,
+      "thermal_kbtu_sqft": 20.239533,
+      "count": 99,
+      "property_type": "Manufacturing/Industrial Plant",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    },
+    "Institutional": {
+      "electricity_kwh_sqft": 7.530894,
+      "water_gal_sqft": 14.512283,
+      "thermal_kbtu_sqft": 32.883254,
+      "count": 135,
+      "property_type": "K-12 School",
+      "report_year": 2023,
+      "scope": "exact property type, NYC, 2023, screened single-building whole-property unestimated complete observations"
+    }
+  }
+}

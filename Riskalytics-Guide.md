@@ -1,4 +1,4 @@
-# NEXUS — Property Intelligence
+# Riskalytics — Property Intelligence
 
 A local working prototype for the HackUTD 2026 CBRE track. Connect fragmented annual building, utility, and weather records; compute transparent subclass and building priority scores; explain drivers; compare electrical mitigation scenarios; and track follow-up actions.
 

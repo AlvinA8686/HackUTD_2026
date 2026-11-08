@@ -1,0 +1,32 @@
+[
+  {
+    "id": "nyc_ll84_2023",
+    "title": "NYC LL84 energy and water disclosure — calendar year 2023",
+    "url": "https://data.cityofnewyork.us/Environment/5zyy-y8am",
+    "query_url": "https://data.cityofnewyork.us/resource/5zyy-y8am.json?%24select=report_year%2Cproperty_id%2Cproperty_name%2Cyear_ending%2Cnyc_borough_block_and_lot%2Cnyc_building_identification%2Caddress_1%2Ccity%2Cpostal_code%2Cprimary_property_type%2Clargest_property_use_type%2Cyear_built%2Cnumber_of_buildings%2Coccupancy%2Cmetered_areas_energy%2Cmetered_areas_water%2Cproperty_gfa_calculated_1%2Cproperty_gfa_self_reported%2Celectricity_use_grid_purchase_1%2Celectricity_use_grid_purchase_2%2Cwater_use_all_water_sources%2Cindoor_water_use_all_water%2Cnatural_gas_use_kbtu%2Cdistrict_steam_use_kbtu%2Cdistrict_hot_water_use_kbtu%2Cdistrict_chilled_water_use%2Cfuel_oil_1_use_kbtu%2Cfuel_oil_2_use_kbtu%2Cfuel_oil_4_use_kbtu%2Cfuel_oil_5_6_use_kbtu%2Cdiesel_2_use_kbtu%2Cpropane_use_kbtu%2Ckerosene_use_kbtu%2Cestimated_values_energy%2Cestimated_values_water%2Calert_energy_meter_has_less%2Calert_energy_meter_has_gaps%2Calert_energy_meter_has%2Calert_water_meter_has_less%2Creport_submission_date%2Cborough%2Clatitude%2Clongitude&%24where=report_year%3D2023&%24order=property_id%2Creport_submission_date+DESC&%24limit=50000",
+    "raw_file": "data/raw/nyc_ll84_2023.json.gz",
+    "sha256_uncompressed": "a31eea2d8205a466430ed85d47e3ef54e16bf4c896853e30b4513e7f4449f3b8",
+    "retrieved_at_utc": "2026-11-08T06:09:56.327947+00:00",
+    "record_count": 33684
+  },
+  {
+    "id": "nyc_ll84_2022",
+    "title": "NYC LL84 energy and water disclosure — calendar year 2022",
+    "url": "https://data.cityofnewyork.us/Environment/5zyy-y8am",
+    "query_url": "https://data.cityofnewyork.us/resource/5zyy-y8am.json?%24select=report_year%2Cproperty_id%2Cproperty_name%2Cyear_ending%2Cnyc_borough_block_and_lot%2Cnyc_building_identification%2Caddress_1%2Ccity%2Cpostal_code%2Cprimary_property_type%2Clargest_property_use_type%2Cyear_built%2Cnumber_of_buildings%2Coccupancy%2Cmetered_areas_energy%2Cmetered_areas_water%2Cproperty_gfa_calculated_1%2Cproperty_gfa_self_reported%2Celectricity_use_grid_purchase_1%2Celectricity_use_grid_purchase_2%2Cwater_use_all_water_sources%2Cindoor_water_use_all_water%2Cnatural_gas_use_kbtu%2Cdistrict_steam_use_kbtu%2Cdistrict_hot_water_use_kbtu%2Cdistrict_chilled_water_use%2Cfuel_oil_1_use_kbtu%2Cfuel_oil_2_use_kbtu%2Cfuel_oil_4_use_kbtu%2Cfuel_oil_5_6_use_kbtu%2Cdiesel_2_use_kbtu%2Cpropane_use_kbtu%2Ckerosene_use_kbtu%2Cestimated_values_energy%2Cestimated_values_water%2Calert_energy_meter_has_less%2Calert_energy_meter_has_gaps%2Calert_energy_meter_has%2Calert_water_meter_has_less%2Creport_submission_date%2Cborough%2Clatitude%2Clongitude&%24where=report_year%3D2022&%24order=property_id%2Creport_submission_date+DESC&%24limit=50000",
+    "raw_file": "data/raw/nyc_ll84_2022.json.gz",
+    "sha256_uncompressed": "9617b9853b8b3c83233884ef13f8e0a7cc8772baaf6bd2d281b887cea292a7e4",
+    "retrieved_at_utc": "2026-11-08T06:10:09.787572+00:00",
+    "record_count": 30485
+  },
+  {
+    "id": "noaa_ghcnd_2023",
+    "title": "NOAA GHCN-Daily Central Park — calendar year 2023",
+    "url": "https://www.ncei.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND%3AUSW00094728/detail",
+    "query_url": "https://www.ncei.noaa.gov/access/services/data/v1?dataset=daily-summaries&dataTypes=TMAX%2CTMIN&stations=USW00094728&startDate=2023-01-01&endDate=2023-12-31&units=metric&format=json&includeAttributes=true",
+    "raw_file": "data/raw/noaa_central_park_2023.json.gz",
+    "sha256_uncompressed": "b2a9306c5cd3b898e16abe97ee5875ec0853a2d650971ae51ed19a0f05dab848",
+    "retrieved_at_utc": "2026-11-08T06:10:10.649269+00:00",
+    "record_count": 365
+  }
+]

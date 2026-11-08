@@ -52,6 +52,9 @@ test('partial imports retain row errors while scoring valid records', () => {
   const d = scorePortfolio([sample,sample]); assert.equal(d.summary.invalid,2);
   const malformed=scorePortfolio([null,{...sample,name:{toString:null}},{...sample,building_id:{toString:null},weather_key:{toString:null}}]);assert.equal(malformed.summary.invalid,3);
 });
+test('blank optional metadata from CSV or SQLite is absent rather than zero',()=>{
+  const s=score({...sample,year_built:'',weather_year:null,reference_year:'',occupancy_pct:null});close(s.overall,74.193);
+});
 test('CSV parser handles commas, escaped quotes, CRLF, BOM, blank lines and multiline values', () => {
   const csv = '\uFEFFname,city\r\n"Tower, \"\"A\"\"","New\nYork"\r\n\r\n';
   assert.deepEqual(parseCSV(csv), [{name:'Tower, "A"',city:'New\nYork'}]);

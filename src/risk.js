@@ -1,4 +1,4 @@
-export const MODEL_VERSION = 'nexus-priority-v1.1';
+export const MODEL_VERSION = 'riskalytics-priority-v1.1';
 export const WEIGHTS = Object.freeze({
   Technology: { electricity: 0.42, plumbing: 0.10, hvac: 0.42, revenue: 0.06 },
   Healthcare: { electricity: 0.37, plumbing: 0.25, hvac: 0.32, revenue: 0.06 },
@@ -26,7 +26,7 @@ export class ValidationError extends Error {
 
 export function resolveReference(building, benchmarks = {}) {
   const explicitKeys = ['reference_electricity_kwh_sqft', 'reference_water_gal_sqft', 'reference_thermal_kbtu_sqft'];
-  const explicit = explicitKeys.some(k => building[k] !== undefined && building[k] !== '');
+  const explicit = explicitKeys.some(k => building[k] !== undefined && building[k] !== null && !(typeof building[k] === 'string' && building[k].trim() === ''));
   if (explicit) return {
     electricity_kwh_sqft: building.reference_electricity_kwh_sqft,
     water_gal_sqft: building.reference_water_gal_sqft,
@@ -46,6 +46,8 @@ export function resolveReference(building, benchmarks = {}) {
 export function validateBuilding(input, benchmarks = {}) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new ValidationError(['A building object is required.']);
   const building = { ...input };
+  // Flat CSV/SQLite exports include blank optional metadata; absence is not a numeric zero.
+  for(const key of ['report_year','weather_year','year_built','reference_year','reference_count','peer_count','occupancy_pct'])if(building[key]===null||typeof building[key]==='string'&&building[key].trim()==='')delete building[key];
   const issues = [];
   if (typeof building.building_type !== 'string' || !Object.hasOwn(WEIGHTS, building.building_type)) issues.push('building_type must be Technology, Healthcare, Commercial, Residential, Industrial, or Institutional.');
   for (const key of ['name', 'address', 'city', 'building_id', 'property_type', 'weather_key', 'reference_label', 'revenue_source', 'benchmark_version']) {

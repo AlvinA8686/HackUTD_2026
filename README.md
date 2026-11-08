@@ -53,12 +53,12 @@ Revenue severity is `100 × revenue / (revenue + $100,000,000)`. Higher revenue 
 
 | Building type | Electricity | Plumbing | HVAC | Revenue |
 | --- | ---: | ---: | ---: | ---: |
-| Technology | 42% | 42% | 10% | 6% |
-| Healthcare | 37% | 32% | 25% | 6% |
-| Commercial | 27% | 37% | 30% | 6% |
-| Residential | 32% | 37% | 25% | 6% |
-| Industrial | 22% | 32% | 40% | 6% |
-| Institutional | 42% | 22% | 30% | 6% |
+| Technology | 42% | 10% | 42% | 6% |
+| Healthcare | 37% | 25% | 32% | 6% |
+| Commercial | 27% | 30% | 37% | 6% |
+| Residential | 32% | 25% | 37% | 6% |
+| Industrial | 22% | 40% | 32% | 6% |
+| Institutional | 42% | 30% | 22% | 6% |
 
 The reference year is **2023**; this is a retrospective demonstration, not live telemetry. Actual public observations come from [NYC annual energy and water disclosure](https://data.cityofnewyork.us/Environment/NYC-Building-Energy-and-Water-Data-Disclosure-for-/5zyy-y8am) and [NOAA Central Park daily weather](https://www.ncei.noaa.gov/access/services/data/v1?dataset=daily-summaries&dataTypes=TMAX%2CTMIN&stations=USW00094728&startDate=2023-01-01&endDate=2023-12-31&units=metric&format=json&includeAttributes=true). The two municipal annual fragments are from the same reporting program; NOAA is a separate collection program. Exact source queries and hashes are retained. No CBRE client relationship is asserted.
 

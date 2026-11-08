@@ -26,13 +26,13 @@ Enter the [methodology example](METHODOLOGY.md):
 - Thermal energy 90 kBtu/ft²/year; reference 60.
 - Hot days 30; freeze days 60; building age 60 years.
 
-Expected unrounded results: electricity **90**, plumbing **48.75**, baseline HVAC **55.4166667**, final HVAC **67.9**, revenue **50**, Technology combined **68.065**.
+Expected unrounded results: electricity **90**, plumbing **48.75**, baseline HVAC **55.4166667**, final HVAC **67.9**, revenue **50**, Technology combined **74.193**.
 
-Switch to Institutional while keeping every input and reference fixed. The combined score becomes **71.895** because the contribution weights change. Component scores stay fixed if their parameters/references stay fixed.
+Switch to Institutional while keeping every input and reference fixed. The combined score becomes **70.363** because the contribution weights change. Component scores stay fixed if their parameters/references stay fixed.
 
 ## 4. Show an actionable what-if
 
-Simulate an electrical improvement: lower electricity intensity to 30 and annual change to zero, keeping all other example inputs fixed. Electricity becomes **12.5**. The cascade turns off, so HVAC returns to its baseline **55.4166667**. Plumbing remains **48.75**. Technology combined becomes **34.2666667**.
+Simulate an electrical improvement: lower electricity intensity to 30 and annual change to zero, keeping all other example inputs fixed. Electricity becomes **12.5**. The cascade turns off, so HVAC returns to its baseline **55.4166667**. Plumbing remains **48.75**. Technology combined becomes **36.4**.
 
 Next action: review demand and operating changes, verify metering/capacity, and investigate HVAC power and backup arrangements with the facilities team. The scenario illustrates the model dependency; it does not prove that lowering annual electricity use prevents an outage.
 

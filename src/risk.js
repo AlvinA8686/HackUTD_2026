@@ -1,11 +1,11 @@
-export const MODEL_VERSION = 'nexus-priority-v1.0';
+export const MODEL_VERSION = 'nexus-priority-v1.1';
 export const WEIGHTS = Object.freeze({
-  Technology: { electricity: 0.42, plumbing: 0.42, hvac: 0.10, revenue: 0.06 },
-  Healthcare: { electricity: 0.37, plumbing: 0.32, hvac: 0.25, revenue: 0.06 },
-  Commercial: { electricity: 0.27, plumbing: 0.37, hvac: 0.30, revenue: 0.06 },
-  Residential: { electricity: 0.32, plumbing: 0.37, hvac: 0.25, revenue: 0.06 },
-  Industrial: { electricity: 0.22, plumbing: 0.32, hvac: 0.40, revenue: 0.06 },
-  Institutional: { electricity: 0.42, plumbing: 0.22, hvac: 0.30, revenue: 0.06 },
+  Technology: { electricity: 0.42, plumbing: 0.10, hvac: 0.42, revenue: 0.06 },
+  Healthcare: { electricity: 0.37, plumbing: 0.25, hvac: 0.32, revenue: 0.06 },
+  Commercial: { electricity: 0.27, plumbing: 0.30, hvac: 0.37, revenue: 0.06 },
+  Residential: { electricity: 0.32, plumbing: 0.25, hvac: 0.37, revenue: 0.06 },
+  Industrial: { electricity: 0.22, plumbing: 0.40, hvac: 0.32, revenue: 0.06 },
+  Institutional: { electricity: 0.42, plumbing: 0.30, hvac: 0.22, revenue: 0.06 },
 });
 export const PARAMETERS = [
   { key: 'annual_revenue_usd', label: 'Annual client revenue', unit: 'USD / year', min: 0, max: 1e15, step: 1000000, default: 100000000, group: 'Revenue', help: 'Client revenue is a business-impact scenario, not the probability of equipment failure.' },

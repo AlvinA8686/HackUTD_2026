@@ -2,7 +2,7 @@
 
 This prototype produces a transparent **0-100 operational investigation and business-priority index**. Higher means earlier investigation under the chosen policy. It is not a failure probability, an engineering inspection, an ENERGY STAR score, or an estimate of financial loss.
 
-The building-type weights come directly from the user-supplied weighting document. The component formulas, thresholds, revenue pivot and cascade coefficient are explicit hackathon policy choices. Public sources support input definitions; they do not validate these coefficients or establish that high consumption causes a failure.
+The building-type weights come directly from the corrected user-supplied weighting document, with plumbing and HVAC contribution weights exchanged in model v1.1. The component formulas, thresholds, revenue pivot and cascade coefficient are explicit hackathon policy choices. Public sources support input definitions; they do not validate these coefficients or establish that high consumption causes a failure.
 
 ## Four scores and one directed dependency
 
@@ -124,12 +124,12 @@ Revenue reflects business severity rather than physical failure likelihood. Comp
 
 | Building type | Electricity | Plumbing | HVAC | Revenue |
 | --- | ---: | ---: | ---: | ---: |
-| Technology | 42% | 42% | 10% | 6% |
-| Healthcare | 37% | 32% | 25% | 6% |
-| Commercial | 27% | 37% | 30% | 6% |
-| Residential | 32% | 37% | 25% | 6% |
-| Industrial | 22% | 32% | 40% | 6% |
-| Institutional | 42% | 22% | 30% | 6% |
+| Technology | 42% | 10% | 42% | 6% |
+| Healthcare | 37% | 25% | 32% | 6% |
+| Commercial | 27% | 30% | 37% | 6% |
+| Residential | 32% | 25% | 37% | 6% |
+| Industrial | 22% | 40% | 32% | 6% |
+| Institutional | 42% | 30% | 22% | 6% |
 
 ```text
 building index = wE × E + wP × P + wH × H + 0.06 × R
@@ -164,14 +164,14 @@ The table shows weighted points before display rounding:
 
 | Building type | Electricity points | Plumbing points | HVAC points | Revenue points | Building index |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Technology | 37.8 | 20.475 | 6.79 | 3 | **68.065** |
-| Healthcare | 33.3 | 15.6 | 16.975 | 3 | **68.875** |
-| Commercial | 24.3 | 18.0375 | 20.37 | 3 | **65.7075** |
-| Residential | 28.8 | 18.0375 | 16.975 | 3 | **66.8125** |
-| Industrial | 19.8 | 15.6 | 27.16 | 3 | **65.56** |
-| Institutional | 37.8 | 10.725 | 20.37 | 3 | **71.895** |
+| Technology | 37.8 | 4.875 | 28.518 | 3 | **74.193** |
+| Healthcare | 33.3 | 12.1875 | 21.728 | 3 | **70.2155** |
+| Commercial | 24.3 | 14.625 | 25.123 | 3 | **67.048** |
+| Residential | 28.8 | 12.1875 | 25.123 | 3 | **69.1105** |
+| Industrial | 19.8 | 19.5 | 21.728 | 3 | **64.028** |
+| Institutional | 37.8 | 14.625 | 14.938 | 3 | **70.363** |
 
-Institutional scores highest here because of its electricity/HVAC weights. Rankings can change with different inputs.
+Technology scores highest here because of its electricity/HVAC weights. Rankings can change with different inputs.
 
 ## Data validation and coherence
 

@@ -12,7 +12,7 @@ const score = b => scoreBuilding(b).scores;
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `${a} differs from ${b}`);
 test('worked example matches independently calculated subclasses and each exact weight set', () => {
   const s = score(sample); close(s.electricity, 90); close(s.plumbing, 48.75); close(s.hvacBase, 55.41666666666667); close(s.hvac, 67.9); close(s.revenue, 50);
-  const expected = { Technology: 68.065, Healthcare: 68.875, Commercial: 65.7075, Residential: 66.8125, Industrial: 65.56, Institutional: 71.895 };
+  const expected = { Technology: 74.193, Healthcare: 70.2155, Commercial: 67.048, Residential: 69.1105, Industrial: 64.028, Institutional: 70.363 };
   for (const [type, overall] of Object.entries(expected)) { close(score({ ...sample, building_type: type }).overall, overall); close(Object.values(WEIGHTS[type]).reduce((a,b) => a+b), 1); }
 });
 test('electricity cascades into HVAC only, never plumbing, and HVAC does not feed electricity', () => {

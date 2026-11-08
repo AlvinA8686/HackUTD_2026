@@ -9,3 +9,20 @@
 p,.field small,.stat-note,.risk-caption,.detail-subtitle,.notice,.source-description{font-size:12px;line-height:1.6}.sidebar p{font-size:12px}.field input,.field select{font-size:13px}.nav-item{font-size:12px}.table-wrap td{font-size:12px}
 
 .manual-error{margin:18px 24px 0;scroll-margin-top:24px}.manual-error ul{margin:7px 0 0;padding-left:20px}.field input[aria-invalid="true"],.field select[aria-invalid="true"]{border-color:#b35139;background:#fff9f6;box-shadow:0 0 0 1px #b3513930}.field .field-error{font-size:12px;color:#9a3d29;font-weight:500}.manual-result{scroll-margin-top:24px}.manual-result:focus{outline:none}.manual-status-icon{display:flex;justify-content:center;align-items:center;min-height:48px;color:#65894e;margin-bottom:16px}.manual-status-icon>svg{width:32px;height:32px}.manual-status-icon .spinner{width:28px;height:28px}.manual-result[data-status="loading"]{display:block!important}.manual-result[data-status="error"]{display:block!important}
+
+/* Actionable insights only: higher placement, readable text and visible next steps. */
+.drivers-section{background:#f1f7ed;border-left:4px solid #357a53;border-top:1px solid #d8e5d2;border-bottom:1px solid #d8e5d2}
+.drivers-section>h3,.manual-result .drivers-section>h3{font-size:17px;line-height:1.35;font-weight:650;color:#234a33;flex-direction:column;align-items:flex-start;gap:5px;margin-bottom:14px}
+.drivers-section>h3>span{font-size:11px;line-height:1.5;letter-spacing:.07em;color:#39704d;font-weight:600}
+.drivers-section .driver{padding:14px;margin:12px 0;border:1px solid #d5e2cf;border-radius:6px;background:#fff}
+.drivers-section .driver-title{font-size:14.5px;line-height:1.45;font-weight:650;color:#234a33;gap:8px}
+.drivers-section .driver-title svg{width:16px;height:16px;color:#527c48;margin-top:2px}
+.drivers-section .driver-title .subtle{font-size:12px;color:#5b705c}
+.drivers-section .driver p{font-size:14px;line-height:1.6;color:#3b5140;padding-left:0;margin:8px 0 12px}
+.drivers-section .driver-recommendation{background:#f3f8ef;border-left:3px solid #8bb17d;padding:10px 12px;margin:10px 0 13px;border-radius:0 4px 4px 0}
+.drivers-section .driver-recommendation>span{font-size:11px;line-height:1.5;font-weight:650;letter-spacing:.04em;color:#3c6b48;text-transform:uppercase}
+.drivers-section .driver .driver-recommendation p{margin:5px 0 0;font-size:14px;line-height:1.6;color:#244c35;font-weight:500}
+.drivers-section .driver .text-button{font-size:13px;line-height:1.4;min-height:38px;font-weight:650;margin-left:0;padding:8px 12px;background:#edf5e8;border:1px solid #bed3b5;border-radius:4px;color:#275c39;gap:10px}
+.drivers-section .driver .text-button:hover{background:#e1eed9;border-color:#8eaf80}
+.drivers-section>.flow-boost{font-size:14px;line-height:1.6;color:#3b5140}
+@media(max-width:1000px){.detail-panel .detail-section.drivers-section{grid-column:1/-1;grid-row:auto}}

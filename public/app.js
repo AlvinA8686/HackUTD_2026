@@ -35,19 +35,177 @@ function renderActions(){$('#action-count').textContent=state.actions.filter(x=>
 function addInvestigation(key,index){const row=resultAt(key),d=row?.scores?.drivers?.[index];if(!d)return;const b=row.building,identity=`${b.building_id||b.name}|${d.parameter}`;if(state.actions.some(x=>x.identity===identity&&!x.done)){toast('This investigation is already planned.');return;}state.actions.unshift({id:crypto.randomUUID(),identity,building:b.name||b.building_id||'Scenario building',system:d.system,title:d.label,detail:d.action||d.message,done:false,created:new Date().toISOString()});state.actions=state.actions.slice(0,100);saveActions();toast('Investigation added to your local action plan.');}
 function tabTo(name){$$('[data-tab]').forEach(el=>{el.classList.toggle('active',el.dataset.tab===name);if(el.dataset.tab===name)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});$('#portfolio-view').classList.toggle('hidden',name!=='portfolio');$('#assessment-view').classList.toggle('hidden',name!=='assessment');$('#breadcrumb-label').textContent=name==='portfolio'?'Portfolio overview':'Building assessment';}
 const FALLBACK_FIELDS=[{key:'electricity_kwh_sqft',label:'Electricity intensity',unit:'kWh / ft² / year',min:0,step:.01,default:35,group:'Electricity'},{key:'electricity_change_pct',label:'Electricity intensity change',unit:'% year over year',min:-100,step:.01,default:25,group:'Electricity'},{key:'water_gal_sqft',label:'Water intensity',unit:'gal / ft² / year',min:0,step:.01,default:65,group:'Plumbing'},{key:'water_change_pct',label:'Water intensity change',unit:'% year over year',min:-100,step:.01,default:20,group:'Plumbing'},{key:'thermal_kbtu_sqft',label:'Thermal energy intensity',unit:'kBtu / ft² / year',min:0,step:.01,default:65,group:'HVAC'},{key:'building_age_years',label:'Building age',unit:'years at reporting year',min:0,step:1,default:60,group:'HVAC'},{key:'hot_days',label:'Hot days',unit:'maximum ≥ 32°C',min:0,max:366,step:1,default:30,group:'HVAC'},{key:'freeze_days',label:'Freezing days',unit:'minimum < 0°C',min:0,max:366,step:1,default:60,group:'HVAC'}];
-function buildManual(){const fields=state.config.parameters?.length?state.config.parameters:FALLBACK_FIELDS;$('#manual-type').innerHTML=TYPES.map(t=>`<option>${t}</option>`).join('');$('#type-filter').innerHTML='<option value="">All building types</option>'+TYPES.map(t=>`<option>${t}</option>`).join('');$('#manual-fields').innerHTML=['Electricity','Plumbing','HVAC'].map((group,i)=>`<div class="form-section"><div class="form-section-heading"><span class="section-number">0${i+2}</span><div><h3>${group==='HVAC'?'HVAC & climate':group}</h3><p>${group==='Electricity'?'Understand the load and how it is changing.':group==='Plumbing'?'Assess water demand independently.':'Connect thermal demand, climate and building vintage.'}</p></div></div><div class="form-grid">${fields.filter(f=>f.group===group).map(f=>`<label class="field"><span>${esc(f.label)}<small>${esc(f.unit)}</small></span><input type="number" name="${esc(f.key)}" min="${esc(f.min??0)}" max="${esc(f.max??1000000)}" step="${f.step===1?'1':'any'}" value="${esc(f.default??0)}" required><small>${esc(f.help||'')}</small></label>`).join('')}</div></div>`).join('');updatePeers();}
+function manualParameters() {
+  const configured=state.config.parameters||[];
+  const maximums={electricity_kwh_sqft:100000,building_age_years:500,hot_days:366,freeze_days:366};
+  return FALLBACK_FIELDS.map(field=>({max:maximums[field.key]??1000000,...field,...configured.find(p=>p.key===field.key)}));
+}
+function buildManual() {
+  const form=$('#assessment-form');
+  form.noValidate=true;
+  $('#manual-type').innerHTML=TYPES.map(t=>`<option value="${t}">${t}</option>`).join('');
+  $('#type-filter').innerHTML='<option value="">All building types</option>'+TYPES.map(t=>`<option>${t}</option>`).join('');
+  $('#manual-fields').innerHTML=['Electricity','Plumbing','HVAC'].map((group,index)=>`<div class="form-section"><div class="form-section-heading"><span class="section-number">0${index+2}</span><div><h3>${group==='HVAC'?'HVAC & climate':group}</h3><p>${group==='Electricity'?'Understand the load and how it is changing.':group==='Plumbing'?'Assess water demand independently.':'Connect thermal demand, climate and building vintage.'}</p></div></div><div class="form-grid">${manualParameters().filter(f=>f.group===group).map(f=>`<label class="field"><span>${esc(f.label)}<small>${esc(f.unit)}</small></span><input id="manual-${f.key}" type="number" name="${f.key}" min="${f.min??0}" max="${f.max??1000000}" step="${f.step===1?'1':'any'}" value="${f.default??0}" aria-describedby="help-${f.key}" required><small id="help-${f.key}">${esc(f.help||'')}</small></label>`).join('')}</div></div>`).join('');
+  for(const name of ['name','report_year','annual_revenue_usd']) form.elements.namedItem(name).id=`manual-${name}`;
+  form.elements.namedItem('annual_revenue_usd').step='any';
+  updatePeers(false);
+  updateWeatherLimits();
+}
+function refreshManualConfiguration() {
+  const form=$('#assessment-form');
+  for(const field of manualParameters()){
+    const input=form.elements.namedItem(field.key);if(!input)continue;
+    input.min=String(field.min);input.max=String(field.max);input.step=field.step===1?'1':'any';
+    $(`#help-${field.key}`).textContent=field.help||'';
+  }
+  updateWeatherLimits();updatePeers();
+}
 const peerMap=()=>state.config.benchmarks?.property_types||state.config.benchmarks?.byPropertyType||{};
 const typeMap=()=>state.config.benchmarks?.building_types||state.config.benchmarks?.byBuildingType||{};
-function updatePeers(){const select=$('#manual-peer');if(!select)return;const selected=select.value,type=$('#manual-type').value,records=state.results.filter(x=>x.building?.building_type===type).map(x=>x.building.property_type);const peers=Object.entries(peerMap()).filter(([name,r])=>r.building_type===type||records.includes(name)||typeMap()[type]?.property_type===name);select.innerHTML='<option value="">Building-type reference</option>'+peers.map(([name])=>`<option value="${esc(name)}">${esc(name)}</option>`).join('');if(peers.some(([n])=>n===selected))select.value=selected;updatePeerHelp();}
-function updatePeerHelp(){
- const type=$('#manual-type').value,peer=$('#manual-peer').value,c=state.manualContext;
- let r=peer?peerMap()[peer]:typeMap()[type];
- if(c&&c.building_type===type&&(!peer||c.property_type===peer)&&c.reference_electricity_kwh_sqft){r={electricity_kwh_sqft:c.reference_electricity_kwh_sqft,water_gal_sqft:c.reference_water_gal_sqft,thermal_kbtu_sqft:c.reference_thermal_kbtu_sqft,count:c.reference_count||c.peer_count};}
- $('#peer-help').textContent=r?`${c?'Imported reference':peer||type} reference: electricity ${fmt(r.electricity_kwh_sqft)} kWh/ft² · water ${fmt(r.water_gal_sqft)} gal/ft² · thermal ${fmt(r.thermal_kbtu_sqft)} kBtu/ft²${r.count?` · ${r.count} records`:''}`:'Reference cohort is selected by the scoring engine.';
+function usesImportedReference() {
+  const c=state.manualContext,type=$('#manual-type').value,peer=$('#manual-peer').value;
+  return c&&c.building_type===type&&(!peer||c.property_type===peer)&&['electricity_kwh_sqft','water_gal_sqft','thermal_kbtu_sqft'].every(k=>Number(c[`reference_${k}`])>0);
 }
-function manualValues(){const v=Object.fromEntries(new FormData($('#assessment-form')));for(const f of FALLBACK_FIELDS)v[f.key]=Number(v[f.key]);v.annual_revenue_usd=Number(v.annual_revenue_usd);v.report_year=Number(v.report_year);v.revenue_source='scenario';v.building_id='MANUAL';const c=state.manualContext;if(c&&c.building_type===v.building_type&&(!v.property_type||c.property_type===v.property_type)){for(const key of Object.keys(c)){if(key.startsWith('reference_')||key==='peer_count'||key==='benchmark_version')v[key]=c[key];}}if(!v.property_type)delete v.property_type;return v;}
-async function assessManual(e){e.preventDefault();const btn=$('#assess-button'),err=$('#manual-error');err.classList.add('hidden');btn.disabled=true;try{state.manual=await request('/api/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(manualValues())});$('#manual-result').innerHTML=`<section class="panel">${detailHTML(state.manual,'manual')}</section>`;if(innerWidth<1000)$('#manual-result').scrollIntoView({behavior:'smooth',block:'start'});}catch(error){err.textContent=error.issues?.join(' ')||error.message;err.classList.remove('hidden');}finally{btn.disabled=false;}}
-function loadManual(key){const row=resultAt(key);if(!row?.building)return;const b=row.building;state.manualContext={...b};const form=$('#assessment-form');for(const[k,v]of Object.entries(b)){const input=form.elements.namedItem(k);if(input&&typeof v!=='object')input.value=v;}updatePeers();if(b.property_type&&[...$('#manual-peer').options].some(o=>o.value===b.property_type))$('#manual-peer').value=b.property_type;updatePeerHelp();state.manual=row;$('#manual-result').innerHTML=`<section class="panel">${detailHTML(row,'manual')}</section>`;$('#manual-error').classList.add('hidden');tabTo('assessment');toast('Building parameters copied into the scenario form.');}
+function updatePeers(preserve=true) {
+  const select=$('#manual-peer'),selected=preserve?select.value:'',type=$('#manual-type').value;
+  const recordedUses=state.results.filter(row=>row.building?.building_type===type).map(row=>row.building.property_type);
+  const peers=Object.entries(peerMap()).filter(([name,r])=>r.building_type===type||recordedUses.includes(name)||typeMap()[type]?.property_type===name).map(([name])=>name);
+  const imported=state.manualContext;
+  if(imported?.building_type===type&&imported.property_type&&usesImportedReference()&&!peers.includes(imported.property_type))peers.push(imported.property_type);
+  select.innerHTML='<option value="">Building-type reference</option>'+peers.map(name=>`<option value="${esc(name)}">${esc(name)}</option>`).join('');
+  if(peers.includes(selected))select.value=selected;
+  updatePeerHelp();
+}
+function updatePeerHelp() {
+  const type=$('#manual-type').value,peer=$('#manual-peer').value,c=state.manualContext;
+  let reference=peer?peerMap()[peer]:typeMap()[type],label=peer||type;
+  if(usesImportedReference()){
+    reference={electricity_kwh_sqft:c.reference_electricity_kwh_sqft,water_gal_sqft:c.reference_water_gal_sqft,thermal_kbtu_sqft:c.reference_thermal_kbtu_sqft,count:c.reference_count||c.peer_count};
+    label=c.reference_label||'Imported comparison';
+  }
+  $('#peer-help').textContent=reference?`${label}: electricity ${fmt(reference.electricity_kwh_sqft)} kWh/ft² · water ${fmt(reference.water_gal_sqft)} gal/ft² · thermal ${fmt(reference.thermal_kbtu_sqft)} kBtu/ft²${reference.count?` · ${reference.count} records`:''}`:'The scoring engine will resolve the reference for the selected building type.';
+}
+function updateWeatherLimits() {
+  const year=Number($('#assessment-form').elements.namedItem('report_year').value);
+  const limit=year%4===0&&(year%100!==0||year%400===0)?366:365;
+  for(const key of ['hot_days','freeze_days'])$('#assessment-form').elements.namedItem(key).max=String(limit);
+}
+function manualValues() {
+  const form=$('#assessment-form'),raw=Object.fromEntries(new FormData(form)),fields=[];
+  const value={name:(raw.name||'').trim(),building_type:raw.building_type,revenue_source:'scenario',building_id:'MANUAL'};
+  if(!value.name)fields.push({key:'name',message:'Enter a building name.'});
+  if(!TYPES.includes(value.building_type))fields.push({key:'building_type',message:'Choose a building type.'});
+  const specs=[{key:'report_year',label:'Reporting year',min:1900,max:2100,step:1},{key:'annual_revenue_usd',label:'Annual client revenue',min:0,max:1e15},...manualParameters()];
+  for(const field of specs){
+    const text=raw[field.key]?.trim()??'',number=Number(text);
+    if(text===''){fields.push({key:field.key,message:`${field.label} is required.`});continue;}
+    if(!Number.isFinite(number)||number<field.min||number>(field.max??1000000)){
+      fields.push({key:field.key,message:`${field.label} must be between ${field.min} and ${field.max??1000000}.`});continue;
+    }
+    if(field.step===1&&!Number.isInteger(number)){fields.push({key:field.key,message:`${field.label} must be a whole number.`});continue;}
+    value[field.key]=number;
+  }
+  if(Number.isInteger(value.report_year)){
+    const year=value.report_year,days=year%4===0&&(year%100!==0||year%400===0)?366:365;
+    for(const key of ['hot_days','freeze_days'])if(value[key]>days)fields.push({key,message:`${key==='hot_days'?'Hot days':'Freezing days'} cannot exceed ${days} in ${year}.`});
+  }
+  if(fields.length){const error=new Error(fields.map(f=>f.message).join(' '));error.fields=fields;error.issues=fields.map(f=>f.message);throw error;}
+  if(raw.property_type)value.property_type=raw.property_type;
+  if(usesImportedReference())for(const [key,input]of Object.entries(state.manualContext))if(key.startsWith('reference_')||key==='peer_count'||key==='benchmark_version')value[key]=input;
+  return value;
+}
+function clearManualErrors() {
+  const form=$('#assessment-form'),error=$('#manual-error');
+  error.classList.add('hidden');error.replaceChildren();
+  $$('[aria-invalid]',form).forEach(input=>{input.removeAttribute('aria-invalid');input.removeAttribute('aria-errormessage');});
+  $$('.field-error',form).forEach(el=>el.remove());
+}
+function showManualError(error) {
+  const form=$('#assessment-form'),summary=$('#manual-error');
+  const specs=[{key:'name',label:'Building name'},{key:'building_type',label:'Building type'},{key:'report_year',label:'Reporting year'},{key:'annual_revenue_usd',label:'Annual client revenue'},...manualParameters()];
+  const errors=error.fields||((error.issues?.length?error.issues:[error.message]).map(message=>{
+    const field=specs.find(p=>message.includes(p.key));
+    return {key:field?.key,message:field?message.replaceAll(field.key,field.label):message};
+  }));
+  for(const item of errors){
+    const input=item.key&&form.elements.namedItem(item.key);
+    if(!input||input.getAttribute('aria-invalid'))continue;
+    const note=document.createElement('small');note.id=`error-${item.key}`;note.className='field-error';note.textContent=item.message;
+    input.setAttribute('aria-invalid','true');input.setAttribute('aria-errormessage',note.id);input.closest('.field')?.append(note);
+  }
+  summary.innerHTML='<strong>Assessment could not be completed</strong><ul>'+errors.map(item=>`<li>${esc(item.message)}</li>`).join('')+'</ul>';
+  summary.classList.remove('hidden');summary.focus();summary.scrollIntoView?.({block:'center',behavior:'auto'});
+}
+function manualPlaceholder(title,message,status='empty') {
+  const result=$('#manual-result');result.dataset.status=status;
+  result.innerHTML=`<section class="panel result-placeholder"><div class="manual-status-icon">${status==='loading'?'<span class="spinner"></span>':icon('building')}</div><h2>${esc(title)}</h2><p>${esc(message)}</p><div class="placeholder-systems"><span>Electricity</span><span>Plumbing</span><span>HVAC</span><span>Revenue</span></div></section>`;
+}
+function setManualBusy(busy) {
+  const button=$('#assess-button');button.disabled=busy;button.setAttribute('aria-busy',String(busy));
+  button.innerHTML=busy?'<span class="spinner"></span> Calculating assessment…':`${icon('activity')} Calculate building risk <span>→</span>`;
+}
+function cancelManualCalculation() {
+  state.manualRun=(state.manualRun||0)+1;state.manualController?.abort();state.manualController=null;setManualBusy(false);
+}
+function markManualDirty() {
+  cancelManualCalculation();state.manual=null;
+  manualPlaceholder('Ready to recalculate.','Inputs changed. Calculate again to see the scores for these values.','dirty');
+}
+async function assessManual(event) {
+  event.preventDefault();cancelManualCalculation();clearManualErrors();state.manual=null;
+  let building;
+  try{building=manualValues();}catch(error){manualPlaceholder('Check the highlighted inputs.','Your entries are preserved. Correct the fields and calculate again.','error');showManualError(error);return;}
+  const run=state.manualRun,controller=new AbortController();state.manualController=controller;
+  const timeout=setTimeout(()=>controller.abort(),15000);
+  setManualBusy(true);manualPlaceholder('Calculating your assessment…','Evaluating each system, its dependencies and your building-type weights.','loading');
+  try{
+    const result=await request('/api/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(building),signal:controller.signal});
+    if(run!==state.manualRun)return;
+    if(!result.building||!result.scores||!['electricity','plumbing','hvac','revenue','overall'].every(key=>Number.isFinite(result.scores[key])))throw new Error('The assessment response was incomplete. Please calculate again.');
+    state.manual=result;const target=$('#manual-result');target.dataset.status='complete';
+    target.innerHTML=`<section class="panel">${detailHTML(result,'manual')}</section>`;
+    target.focus({preventScroll:true});target.scrollIntoView?.({behavior:'auto',block:'start'});
+  }catch(error){
+    if(run!==state.manualRun)return;
+    if(controller.signal.aborted)error=new Error('The calculation timed out. Check that the local app is running and try again.');
+    else if(error instanceof TypeError)error=new Error('Could not reach the local app. Keep the app server running, then try again.');
+    manualPlaceholder('Assessment needs another try.','Your inputs have been kept. Review the message and calculate again.','error');showManualError(error);
+  }finally{
+    clearTimeout(timeout);
+    if(run===state.manualRun){state.manualController=null;setManualBusy(false);}
+  }
+}
+function loadManual(key) {
+  const row=resultAt(key);if(!row?.building||!row.scores)return;
+  cancelManualCalculation();clearManualErrors();const building=row.building,form=$('#assessment-form');
+  state.manualContext={...building};form.elements.namedItem('building_type').value=building.building_type;
+  // Rebuild compatible peers before assigning the imported property use.
+  $('#manual-peer').value='';updatePeers(false);
+  for(const field of ['name','report_year','annual_revenue_usd',...manualParameters().map(p=>p.key)]){
+    const input=form.elements.namedItem(field);if(input&&building[field]!==undefined)input.value=String(building[field]);
+  }
+  if(building.property_type&&[...$('#manual-peer').options].some(o=>o.value===building.property_type))$('#manual-peer').value=building.property_type;
+  updateWeatherLimits();updatePeerHelp();state.manual=row;$('#manual-result').dataset.status='complete';
+  $('#manual-result').innerHTML=`<section class="panel">${detailHTML(row,'manual')}</section>`;
+  tabTo('assessment');toast('Building inputs and comparison references copied into the assessment.');
+}
+function resetManual() {
+  cancelManualCalculation();$('#assessment-form').reset();state.manualContext=null;state.manual=null;
+  clearManualErrors();updatePeers(false);updateWeatherLimits();
+  manualPlaceholder('Bring your building into focus.','Enter your building parameters, then calculate its system and overall priority scores.');
+  toast('Example parameters restored.');
+}
+function bindManualEvents() {
+  const form=$('#assessment-form');form.addEventListener('submit',assessManual);
+  form.addEventListener('input',event=>{if(event.target.name==='report_year')updateWeatherLimits();markManualDirty();});
+  form.addEventListener('change',event=>{
+    if(event.target.id==='manual-type'){state.manualContext=null;updatePeers(false);}
+    else if(event.target.id==='manual-peer'){state.manualContext=null;updatePeerHelp();}
+    markManualDirty();
+  });
+  $('#reset-manual').addEventListener('click',resetManual);
+}
+
 function showDialog(title,html,eyebrow='BEHIND THE NUMBERS'){$('#dialog-title').textContent=title;$('#dialog-eyebrow').textContent=eyebrow;$('#dialog-content').innerHTML=html;if(!$('#info-dialog').open)$('#info-dialog').showModal();}
 function methodology(){showDialog('A model you can follow.',`<p>Nexus produces a <strong>0–100 investigation-priority index</strong> from annual utility records, regional weather and business impact. It is a transparent hackathon screening model, not a calibrated probability of failure.</p><h3>Normalize each input</h3><p>A ramp <strong>r(x,a,b) = clamp((x−a)/(b−a),0,1)</strong> maps a value to 0–1. Electricity, water and thermal intensities are compared with a median for matching property use.</p><div class="formula">E = 75r(electricity/peer,0.8,2) + 25r(electricity change %,0,50)\nP = 75r(water/peer,0.8,2) + 25r(water change %,0,50)\nH₀ = 65r(thermal/peer,0.8,2)\n   + 10min(hot days/60,1) + 10min(freezing days/120,1)\n   + 15r(building age,20,100)\nH = H₀ + (100−H₀) × 0.35 × r(E,50,100)\nR = 100 × revenue / (revenue + $100,000,000)</div><h3>One-way dependency</h3><p>Electricity above 50 increases HVAC priority by up to 35% of its remaining headroom. HVAC never changes electricity. Plumbing is independent. Revenue measures business exposure and increases monotonically.</p><h3>Your exact building-type weights</h3><table><thead><tr><th>Building type</th><th>Electricity</th><th>Plumbing</th><th>HVAC</th><th>Revenue</th></tr></thead><tbody>${TYPES.map(t=>`<tr><td>${t}</td>${['electricity','plumbing','hvac','revenue'].map(k=>`<td>${fmt((state.config.weights[t]?.[k]||0)*100,0)}%</td>`).join('')}</tr>`).join('')}</tbody></table><p style="margin-top:12px">Overall = w<sub>E</sub>E + w<sub>P</sub>P + w<sub>H</sub>H + w<sub>R</sub>R. Calculations retain full precision; displays round to one decimal. Bands: low &lt;25, moderate 25–&lt;50, high 50–&lt;75, critical ≥75.</p><h3>Interpret with context</h3><p>Coefficients, thresholds and bands are prototype policy choices. High utility use does not prove a fault or leak. Thermal energy may include cooking or process loads. Zero non-electric thermal use cannot establish all-electric HVAC health. Building vintage is not equipment age.</p><p><a href="/docs/METHODOLOGY.md" target="_blank" rel="noopener">Full methodology and worked examples ↗</a></p>`);}
 function safeURL(v){try{const u=new URL(v);return['https:','http:'].includes(u.protocol)?u.href:null;}catch{return null;}}
@@ -65,10 +223,10 @@ function bindEvents(){
  $$('[data-sort]').forEach(el=>el.addEventListener('click',()=>{state.direction=state.sort===el.dataset.sort?-state.direction:(el.dataset.sort==='name'?1:-1);state.sort=el.dataset.sort;$$('[data-sort] span').forEach(x=>x.textContent='↕');$('span',el).textContent=state.direction===1?'↑':'↓';renderTable();}));
  $('#building-rows').addEventListener('click',e=>{const row=e.target.closest('[data-id]');if(row){state.selected=row.dataset.id;renderTable();renderDetail();}});$('#building-rows').addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)&&e.target.matches('[data-id]')){e.preventDefault();state.selected=e.target.dataset.id;renderTable();renderDetail();}});
  $('#upload-button').addEventListener('click',()=>$('#file-input').click());$('#file-input').addEventListener('change',e=>uploadFile(e.target.files[0]));$('#reload-button').addEventListener('click',()=>{$('#search').value='';$('#type-filter').value='';$('#risk-filter').value='';loadPortfolio();});$('#export-button').addEventListener('click',exportScores);
- $('#assessment-form').addEventListener('submit',assessManual);$('#manual-type').addEventListener('change',()=>{state.manualContext=null;updatePeers();});$('#manual-peer').addEventListener('change',()=>{state.manualContext=null;updatePeerHelp();});$('#reset-manual').addEventListener('click',()=>{$('#assessment-form').reset();state.manualContext=null;state.manual=null;updatePeers();$('#manual-result').innerHTML='<div class="panel result-placeholder"><h2>Ready for a new assessment.</h2><p>Review the parameters and calculate the building score.</p></div>';$('#manual-error').classList.add('hidden');toast('Example parameters restored.');});
+ bindManualEvents();
  ['#model-button','#footer-method'].forEach(s=>$(s).addEventListener('click',methodology));$('#sources-button').addEventListener('click',sourcesDialog);$('#close-dialog').addEventListener('click',()=>$('#info-dialog').close());$('#info-dialog').addEventListener('click',e=>{if(e.target===$('#info-dialog')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close();}});
  document.addEventListener('submit',e=>{if(e.target.id==='mitigation-form')evaluateMitigation(e);});
  document.addEventListener('click',e=>{const el=e.target.closest('[data-action]');if(!el)return;const key=el.dataset.result,action=el.dataset.action;if(action==='add-investigation')addInvestigation(key,Number(el.dataset.driver));if(action==='load-manual')loadManual(key);if(action==='mitigate')mitigateDialog(key);if(action==='toggle-action'){const a=state.actions.find(x=>x.id===el.dataset.actionId);if(a){a.done=!a.done;saveActions();}}if(action==='remove-action'){state.actions=state.actions.filter(x=>x.id!==el.dataset.actionId);saveActions();}});
 }
-async function init(){$$('[data-icon]').forEach(el=>el.innerHTML=icon(el.dataset.icon));bindEvents();renderActions();try{state.config=await request('/api/config');}catch(error){message(`Scoring configuration unavailable: ${error.message}`,true);}buildManual();await loadPortfolio();}
+async function init(){$$('[data-icon]').forEach(el=>el.innerHTML=icon(el.dataset.icon));buildManual();bindEvents();renderActions();try{state.config=await request('/api/config');refreshManualConfiguration();}catch(error){message(`Scoring configuration unavailable: ${error.message}`,true);}await loadPortfolio();}
 init();

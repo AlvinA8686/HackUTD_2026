@@ -26,6 +26,7 @@ Then open http://127.0.0.1:3001. The application binds to the local computer by 
 - **Portfolio:** begins with 30 genuine public building records, five for each building type. Search, filter, sort, inspect each building's scores, see its directed dependency and contributing factors, and export scores.
 - **Upload a database:** use CSV, JSON, or SQLite 3. The included full database contains 2,976 matched buildings. Files may contain up to 5,000 records and 10 MiB. Invalid rows remain visible with explanations and do not count toward averages.
 - **Building assessment:** enter building type, annual client revenue, annual utility intensities and changes, thermal intensity, building age, and same-year hot/freezing days. Select the appropriate reference peer group and calculate all subclass and combined scores.
+- Manual assessments accept decimal revenue and utility inputs, display errors beside invalid fields, and keep your entries when a request fails. Results scroll into view after calculation. Editing inputs clears the previous result until you recalculate; reset restores the example. Imported buildings retain their explicit reference values until the building type or peer group changes.
 - **Actions and scenarios:** save investigation actions to this browser's local queue. Compare an electrical-input scenario to see its effect on electricity, dependent HVAC and overall priority. A changed score is a model scenario, not evidence that a repair was completed.
 
 SQLite uploads accept a flat `buildings` table using the CSV field names. The included normalized database stores weather separately in `weather`; the import API joins it using `weather_key`. Uploads are processed locally; temporary SQLite copies are removed after reading. Portfolio imports are session state and are not written into the source database. Saved actions use browser local storage; clearing that storage removes them.
@@ -65,6 +66,8 @@ The reference year is **2023**; this is a retrospective demonstration, not live 
 
 ## Reproduce and verify
 
+Install the development test dependencies once with `npm install`. This is needed for the form regression tests; running the application itself still requires only Node.
+
 ```powershell
 npm test
 python scripts/build_database.py
@@ -73,4 +76,4 @@ node scripts/export_scores.mjs
 
 The build uses checked-in, losslessly compressed snapshots and Python's standard library. Network access is needed only for an explicit source refresh through `python scripts/fetch_data.py`. Running the dashboard needs only Node. `npm run check` checks application syntax and runs the tests.
 
-Checks cover independent worked-example arithmetic for every class, score bounds, revenue monotonicity, directed dependencies, missing/invalid values, weather consistency, quoted CSVs, import parity, malformed request handling, path containment and all 2,976 SQLite/CSV records. Browser verification was limited by local preview access restrictions in the development environment.
+Checks cover independent worked-example arithmetic for every class, score bounds, revenue monotonicity, directed dependencies, missing/invalid values, weather consistency, quoted CSVs, import parity, malformed request handling, path containment and all 2,976 SQLite/CSV records. Manual form tests use browser-compatible form controls and real HTTP requests against the app server to cover decimal values, errors, all six types, recalculation, imported references, reset, retry and late responses. Visual browser verification was limited by local preview access restrictions in the development environment.

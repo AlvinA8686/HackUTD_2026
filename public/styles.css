@@ -7,3 +7,5 @@
 
 /* Readable supporting text on laptop and mobile screens. */
 p,.field small,.stat-note,.risk-caption,.detail-subtitle,.notice,.source-description{font-size:12px;line-height:1.6}.sidebar p{font-size:12px}.field input,.field select{font-size:13px}.nav-item{font-size:12px}.table-wrap td{font-size:12px}
+
+.manual-error{margin:18px 24px 0;scroll-margin-top:24px}.manual-error ul{margin:7px 0 0;padding-left:20px}.field input[aria-invalid="true"],.field select[aria-invalid="true"]{border-color:#b35139;background:#fff9f6;box-shadow:0 0 0 1px #b3513930}.field .field-error{font-size:12px;color:#9a3d29;font-weight:500}.manual-result{scroll-margin-top:24px}.manual-result:focus{outline:none}.manual-status-icon{display:flex;justify-content:center;align-items:center;min-height:48px;color:#65894e;margin-bottom:16px}.manual-status-icon>svg{width:32px;height:32px}.manual-status-icon .spinner{width:28px;height:28px}.manual-result[data-status="loading"]{display:block!important}.manual-result[data-status="error"]{display:block!important}

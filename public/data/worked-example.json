@@ -29,18 +29,18 @@
         "hvac": 67.9,
         "cascadeBoost": 12.48333333333333,
         "revenue": 50,
-        "overall": 68.065,
+        "overall": 74.193,
         "band": "High",
         "weights": {
           "electricity": 0.42,
-          "plumbing": 0.42,
-          "hvac": 0.1,
+          "plumbing": 0.1,
+          "hvac": 0.42,
           "revenue": 0.06
         },
         "contributions": {
           "electricity": 37.8,
-          "plumbing": 20.474999999999998,
-          "hvac": 6.790000000000001,
+          "plumbing": 4.875,
+          "hvac": 28.518,
           "revenue": 3
         },
         "drivers": [
@@ -146,7 +146,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.0"
+        "modelVersion": "nexus-priority-v1.1"
       }
     },
     {
@@ -177,18 +177,18 @@
         "hvac": 67.9,
         "cascadeBoost": 12.48333333333333,
         "revenue": 50,
-        "overall": 68.875,
+        "overall": 70.21549999999999,
         "band": "High",
         "weights": {
           "electricity": 0.37,
-          "plumbing": 0.32,
-          "hvac": 0.25,
+          "plumbing": 0.25,
+          "hvac": 0.32,
           "revenue": 0.06
         },
         "contributions": {
           "electricity": 33.3,
-          "plumbing": 15.6,
-          "hvac": 16.975,
+          "plumbing": 12.1875,
+          "hvac": 21.728,
           "revenue": 3
         },
         "drivers": [
@@ -294,7 +294,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.0"
+        "modelVersion": "nexus-priority-v1.1"
       }
     },
     {
@@ -325,18 +325,18 @@
         "hvac": 67.9,
         "cascadeBoost": 12.48333333333333,
         "revenue": 50,
-        "overall": 65.70750000000001,
+        "overall": 67.048,
         "band": "High",
         "weights": {
           "electricity": 0.27,
-          "plumbing": 0.37,
-          "hvac": 0.3,
+          "plumbing": 0.3,
+          "hvac": 0.37,
           "revenue": 0.06
         },
         "contributions": {
           "electricity": 24.3,
-          "plumbing": 18.0375,
-          "hvac": 20.37,
+          "plumbing": 14.625,
+          "hvac": 25.123,
           "revenue": 3
         },
         "drivers": [
@@ -442,7 +442,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.0"
+        "modelVersion": "nexus-priority-v1.1"
       }
     },
     {
@@ -473,18 +473,18 @@
         "hvac": 67.9,
         "cascadeBoost": 12.48333333333333,
         "revenue": 50,
-        "overall": 66.8125,
+        "overall": 69.1105,
         "band": "High",
         "weights": {
           "electricity": 0.32,
-          "plumbing": 0.37,
-          "hvac": 0.25,
+          "plumbing": 0.25,
+          "hvac": 0.37,
           "revenue": 0.06
         },
         "contributions": {
           "electricity": 28.8,
-          "plumbing": 18.0375,
-          "hvac": 16.975,
+          "plumbing": 12.1875,
+          "hvac": 25.123,
           "revenue": 3
         },
         "drivers": [
@@ -590,7 +590,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.0"
+        "modelVersion": "nexus-priority-v1.1"
       }
     },
     {
@@ -621,18 +621,18 @@
         "hvac": 67.9,
         "cascadeBoost": 12.48333333333333,
         "revenue": 50,
-        "overall": 65.56,
+        "overall": 64.02799999999999,
         "band": "High",
         "weights": {
           "electricity": 0.22,
-          "plumbing": 0.32,
-          "hvac": 0.4,
+          "plumbing": 0.4,
+          "hvac": 0.32,
           "revenue": 0.06
         },
         "contributions": {
           "electricity": 19.8,
-          "plumbing": 15.6,
-          "hvac": 27.160000000000004,
+          "plumbing": 19.5,
+          "hvac": 21.728,
           "revenue": 3
         },
         "drivers": [
@@ -738,7 +738,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.0"
+        "modelVersion": "nexus-priority-v1.1"
       }
     },
     {
@@ -769,18 +769,18 @@
         "hvac": 67.9,
         "cascadeBoost": 12.48333333333333,
         "revenue": 50,
-        "overall": 71.895,
+        "overall": 70.363,
         "band": "High",
         "weights": {
           "electricity": 0.42,
-          "plumbing": 0.22,
-          "hvac": 0.3,
+          "plumbing": 0.3,
+          "hvac": 0.22,
           "revenue": 0.06
         },
         "contributions": {
           "electricity": 37.8,
-          "plumbing": 10.725,
-          "hvac": 20.37,
+          "plumbing": 14.625,
+          "hvac": 14.938,
           "revenue": 3
         },
         "drivers": [
@@ -886,7 +886,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.0"
+        "modelVersion": "nexus-priority-v1.1"
       }
     }
   ]

@@ -1,0 +1,11 @@
+.method-panel{display:grid;grid-template-columns:1fr 1.2fr;gap:28px;margin-top:13px;align-items:center;padding:20px}
+.method-copy h3{font:700 15px var(--display);letter-spacing:-.3px;margin:7px 0}
+.method-copy p{font-size:10px;line-height:1.6;color:#7d8780;margin:0;max-width:490px}
+.formula{padding:13px 15px;border:1px solid #e8ece7;background:#fafbf9;border-radius:6px;font-size:10px;color:#5f6a62}
+.formula-label{display:block;font:8px var(--mono);letter-spacing:.8px;color:#8d978f;margin-bottom:8px}
+.formula b{color:#386548;font:500 11px var(--mono)}
+.formula i{font-style:normal;color:#a3aaa4;margin:0 4px}
+.formula-adjust{margin-top:7px;color:#63776a;font-size:9px}
+.formula small{display:block;border-top:1px solid #e9ece8;padding-top:8px;margin-top:9px;color:#9aa19b;font-size:8px;line-height:1.45}
+.action-all.created{color:#477d57;background:#eef6ef;border-color:#d7e7d9}
+@media(max-width:760px){.method-panel{grid-template-columns:1fr;gap:14px;padding:14px}}

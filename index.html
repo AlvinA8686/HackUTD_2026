@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f6f2" />
+    <meta name="description" content="A building operations risk console connecting electricity, plumbing, and HVAC signals to catch cascading failures early." />
+    <title>Signal House | Building Risk Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-extra.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#overview" aria-label="Signal House home">
+          <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 25V13l11-7 11 7v12M11 25v-8h10v8M3 25h26"/><path d="M16 6v7"/></svg></span>
+          <span class="brand-name">signal<span>house</span></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <button class="portfolio-select" id="portfolioSelect" aria-label="Selected portfolio">
+          <span class="portfolio-icon">N</span><span class="portfolio-copy"><b>Northstar Portfolio</b><small>Dallas · 14 properties</small></span><span class="chevron">⌄</span>
+        </button>
+        <nav class="main-nav">
+          <div class="nav-section">OPERATIONS</div>
+          <a href="#overview" class="nav-link active"><span class="nav-icon">◫</span>Overview</a>
+          <a href="#signals" class="nav-link"><span class="nav-icon">⌁</span>Live signals<span class="nav-count">8</span></a>
+          <a href="#systems" class="nav-link"><span class="nav-icon">◎</span>Building systems</a>
+          <a href="#actions" class="nav-link"><span class="nav-icon">▤</span>Work orders<span class="nav-dot"></span></a>
+          <div class="nav-section nav-gap">INTELLIGENCE</div>
+          <a href="#dependencies" class="nav-link"><span class="nav-icon">⌘</span>Dependencies</a>
+          <a href="#impact" class="nav-link"><span class="nav-icon">↗</span>Impact &amp; exposure</a>
+          <a href="#method" class="nav-link"><span class="nav-icon">◷</span>Score methodology</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="connect-card"><div class="connect-top"><span class="pulse-dot"></span><span>DEMO ENVIRONMENT</span></div><p>Sample building data<br />updated just now</p><a href="#method">View data sources <span>↗</span></a></div>
+          <div class="user-row"><div class="avatar">JL</div><div><b>Jordan Lee</b><small>Facilities manager</small></div><span class="more">···</span></div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Northstar Portfolio</span><i>/</i><b>Portfolio overview</b></div>
+          <div class="top-actions"><span class="data-status"><span class="pulse-dot"></span>All systems synced</span><button class="icon-button" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-mark"></span></button><button class="help-button">Help <span>↗</span></button></div>
+        </header>
+
+        <section class="page-heading">
+          <div><div class="eyebrow"><span class="eyebrow-rule"></span>MONDAY, NOVEMBER 09, 2026 <span class="eyebrow-divider">·</span> 9:41 AM CT</div><h1>Good morning, Jordan<span class="wave">✳</span></h1><p>Here’s what’s happening across your buildings today.</p></div>
+          <div class="heading-actions"><button class="button secondary" id="exportBtn"><span class="button-icon">↓</span>Export report</button><button class="button primary" id="scanBtn"><span class="button-icon">↻</span>Run portfolio scan</button></div>
+        </section>
+
+        <section class="stat-grid" aria-label="Portfolio summary">
+          <article class="stat-card"><div class="stat-label">PORTFOLIO RISK <span class="tiny-info" title="Weighted score across 14 properties">i</span></div><div class="stat-main"><strong id="portfolioRisk">68</strong><span class="stat-unit">/ 100</span><span class="trend negative">↑ 6 pts</span></div><div class="stat-foot"><span class="status-pill high"><i></i>Elevated</span><span>vs. last 7 days</span></div><div class="mini-bars" aria-hidden="true"><span style="height:33%"></span><span style="height:45%"></span><span style="height:40%"></span><span style="height:57%"></span><span style="height:52%"></span><span style="height:70%"></span><span style="height:64%"></span><span style="height:82%"></span><span style="height:72%"></span><span style="height:91%"></span><span style="height:78%"></span><span style="height:100%"></span></div></article>
+          <article class="stat-card"><div class="stat-label">PROPERTIES MONITORED <span class="tiny-info" title="Buildings with current utility or maintenance data">i</span></div><div class="stat-main"><strong>14</strong><span class="stat-unit">buildings</span><span class="trend neutral">of 16</span></div><div class="stat-foot"><span class="freshness"><span class="fresh-dot"></span>12 reporting now</span><span>2 stale</span></div><div class="coverage-track"><span style="width:87.5%"></span></div></article>
+          <article class="stat-card"><div class="stat-label">OPEN HIGH-PRIORITY RISKS <span class="tiny-info" title="Needs attention within 24 hours">i</span></div><div class="stat-main"><strong id="openRisks">6</strong><span class="stat-unit">need attention</span><span class="trend negative">↑ 2</span></div><div class="stat-foot"><span class="mini-legend"><i class="legend-red"></i>Critical 2</span><span class="mini-legend"><i class="legend-amber"></i>High 4</span></div><div class="risk-split"><span style="width:33%"></span><span style="width:67%"></span></div></article>
+          <article class="stat-card exposure-card"><div class="stat-label">EST. DOWNTIME EXPOSURE <span class="tiny-info" title="Illustrative estimate based on affected tenants and equipment">i</span></div><div class="stat-main"><strong>$184</strong><span class="stat-unit">k</span><span class="trend positive">↓ $32k</span></div><div class="stat-foot"><span>Across 3 properties</span><span>next 30 days</span></div><div class="exposure-caption"><span class="exposure-line"></span><span>if current signals persist</span></div></article>
+        </section>
+
+        <div class="section-title-row"><div><div class="eyebrow small-eyebrow">PRIORITY VIEW</div><h2>Where to focus today</h2></div><button class="text-action" id="seeAllBtn">View all risks <span>→</span></button></div>
+
+        <section class="focus-grid">
+          <article class="panel property-panel">
+            <div class="panel-header"><div><div class="panel-kicker"><span class="signal-live"></span>PROPERTY RISK</div><h3 id="buildingName">Westlake Tower</h3><div class="property-meta"><span id="buildingAddress">1800 McKinney Ave · Dallas, TX</span><span class="meta-divider">·</span><span id="buildingType">Class A office</span></div></div><button class="select-control" id="buildingSelect" aria-label="Select building"><span id="buildingSelectText">Select building</span><span>⌄</span></button></div>
+            <div class="risk-content"><div class="score-wrap"><div class="score-ring" id="scoreRing"><div class="ring-inner"><strong id="riskScore">82</strong><span>RISK SCORE</span></div></div><div class="score-label"><span class="status-pill critical" id="riskLevel"><i></i>Critical</span><span class="score-trend">↑ 14 pts this week</span></div></div><div class="risk-insight"><div class="insight-heading"><span class="insight-spark">✳</span>WHY RISK IS RISING</div><p id="riskSummary">A cooling loop pressure drop is drawing more power. If the pump trips, two tenant floors may lose cooling within 40 minutes.</p><div class="insight-tags"><span id="affectedTag">2 tenant floors at risk</span><span id="exposureTag">$46k estimated exposure</span></div><button class="link-button" id="traceBtn">Trace system dependency <span>→</span></button></div></div>
+            <div class="property-footer"><div class="last-updated"><span class="pulse-dot"></span>Latest signals <b id="signalTime">2 min ago</b></div><button class="button compact-button" id="buildingDetailsBtn">Building details <span>↗</span></button></div>
+          </article>
+
+          <article class="panel systems-panel" id="systems">
+            <div class="panel-header systems-header"><div><div class="panel-kicker">CONNECTED SYSTEMS</div><h3>Health by system</h3></div><button class="dots-button" aria-label="System options">···</button></div>
+            <div class="system-list" id="systemList"></div>
+            <div class="system-foot"><span><i class="legend-green"></i>Healthy</span><span><i class="legend-amber"></i>Watch</span><span><i class="legend-red"></i>At risk</span><button id="systemMethodBtn">How scoring works <span>↗</span></button></div>
+          </article>
+        </section>
+
+        <section class="lower-grid">
+          <article class="panel dependency-panel" id="dependencies">
+            <div class="panel-header"><div><div class="panel-kicker">CASCADE WATCH</div><h3>One signal. Multiple impacts.</h3><p class="panel-subtitle">Signals connected across building systems</p></div><button class="select-control time-select" id="windowSelect">Next 24 hours <span>⌄</span></button></div>
+            <div class="cascade-map" id="cascadeMap"></div>
+            <div class="cascade-foot"><span><span class="line-key"></span>Observed dependency</span><span>Impact confidence <b id="confidence">87%</b></span><button class="link-button" id="cascadeBtn">Explore cascade <span>→</span></button></div>
+          </article>
+          <article class="panel actions-panel" id="actions">
+            <div class="panel-header"><div><div class="panel-kicker">RECOMMENDED NEXT</div><h3>Actions to prevent downtime</h3></div><span class="action-count" id="actionCount">3</span></div>
+            <div class="action-list" id="actionList"></div>
+            <button class="button action-all" id="createWorkOrderBtn">Create work order <span>＋</span></button>
+          </article>
+        </section>
+
+        <section class="panel signal-panel" id="signals">
+          <div class="panel-header signal-table-header"><div><div class="panel-kicker">LIVE SIGNALS</div><h3>Latest anomalies across the portfolio</h3></div><div class="table-controls"><button class="filter-control" id="filterBtn">All systems <span>⌄</span></button><button class="text-action" id="allSignalsBtn">See all <span>→</span></button></div></div>
+          <div class="table-wrap"><table><thead><tr><th>SIGNAL</th><th>PROPERTY</th><th>SYSTEM</th><th>DETECTED</th><th>CONFIDENCE</th><th>STATUS</th></tr></thead><tbody id="signalRows"></tbody></table></div>
+          <div class="table-footer"><span>Showing <b id="showingCount">5</b> of 28 recent signals</span><button class="table-next" id="nextSignalsBtn">Load more <span>↓</span></button></div>
+        </section>
+
+        <section class="panel method-panel" id="method">
+          <div class="method-copy"><div class="panel-kicker">HOW THE DEMO SCORES RISK</div><h3>Three systems, one connected view.</h3><p>System health is converted into risk, then adjusted for cross-system dependencies, recent signal trends, and maintenance context. A lower system health score raises building risk; connected failure paths raise it further.</p></div>
+          <div class="formula"><span class="formula-label">BUILDING RISK · 0–100</span><div><b>40%</b> Electricity risk <i>+</i> <b>30%</b> Plumbing risk <i>+</i> <b>30%</b> HVAC risk</div><div class="formula-adjust">+ dependency exposure + signal trend + maintenance context</div><small>Illustrative, rules-based demo. Scores and cost ranges use sample data and are not calibrated predictions.</small></div>
+        </section>
+        <footer class="page-footer"><span>Signal House <span class="footer-sep">·</span> Building risk intelligence</span><span>Demo data for illustration <span class="footer-sep">·</span> Last refreshed <b id="footerTime">9:41 AM</b></span></footer>
+      </main>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="modal-backdrop" id="modalBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" id="modalClose" aria-label="Close">×</button><div class="modal-icon">⌘</div><div class="panel-kicker">SYSTEM DEPENDENCY</div><h2 id="modalTitle">Cooling cascade path</h2><p id="modalText"></p><div class="modal-path" id="modalPath"></div><div class="modal-impact" id="modalImpact"></div><button class="button primary modal-done" id="modalDone">Got it</button></section></div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

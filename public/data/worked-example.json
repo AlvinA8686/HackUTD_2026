@@ -146,7 +146,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.1"
+        "modelVersion": "riskalytics-priority-v1.1"
       }
     },
     {
@@ -294,7 +294,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.1"
+        "modelVersion": "riskalytics-priority-v1.1"
       }
     },
     {
@@ -442,7 +442,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.1"
+        "modelVersion": "riskalytics-priority-v1.1"
       }
     },
     {
@@ -590,7 +590,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.1"
+        "modelVersion": "riskalytics-priority-v1.1"
       }
     },
     {
@@ -738,7 +738,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.1"
+        "modelVersion": "riskalytics-priority-v1.1"
       }
     },
     {
@@ -886,7 +886,7 @@
           "label": "Illustrative fixed references",
           "basis": "supplied"
         },
-        "modelVersion": "nexus-priority-v1.1"
+        "modelVersion": "riskalytics-priority-v1.1"
       }
     }
   ]

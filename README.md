@@ -1,4 +1,4 @@
-# NEXUS — Property Intelligence
+# Riskalytics — Property Intelligence
 
 A local working prototype for the HackUTD 2026 CBRE track. Connect fragmented annual building, utility, and weather records; compute transparent subclass and building priority scores; explain drivers; compare electrical mitigation scenarios; and track follow-up actions.
 
@@ -24,12 +24,15 @@ Then open http://127.0.0.1:3001. The application binds to the local computer by 
 ## Use the platform
 
 - **Portfolio:** begins with 30 genuine public building records, five for each building type. Search, filter, sort, inspect each building's scores, see its directed dependency and contributing factors, and export scores.
-- **Upload a database:** use CSV, JSON, or SQLite 3. The included full database contains 2,976 matched buildings. Files may contain up to 5,000 records and 10 MiB. Invalid rows remain visible with explanations and do not count toward averages.
+- **Upload datasets:** select multiple fragmented CSV, JSON or SQLite files. Review column mappings, match buildings by ID/address and year, resolve conflicting values, and apply the merged portfolio. Shared weather uses one accepted value per reference/year. Invalid rows remain visible with explanations and do not count toward averages.
+- **Download a clean database:** export the merged result as SQLite, CSV or JSON with input parameters and risk scores. Clean exports exclude unresolved/incomplete buildings; the review report and SQLite audit tables preserve exclusions, source hashes, original rows and field provenance. [Merge workflow instructions](docs/MERGING_DATA.md) explain matching, supported units and conflict resolution.
 - **Building assessment:** enter building type, annual client revenue, annual utility intensities and changes, thermal intensity, building age, and same-year hot/freezing days. Select the appropriate reference peer group and calculate all subclass and combined scores.
 - Manual assessments accept decimal revenue and utility inputs, display errors beside invalid fields, and keep your entries when a request fails. Results scroll into view after calculation. Editing inputs clears the previous result until you recalculate; reset restores the example. Imported buildings retain their explicit reference values until the building type or peer group changes.
 - **Actions and scenarios:** save investigation actions to this browser's local queue. Compare an electrical-input scenario to see its effect on electricity, dependent HVAC and overall priority. A changed score is a model scenario, not evidence that a repair was completed.
 
 SQLite uploads accept a flat `buildings` table using the CSV field names. The included normalized database stores weather separately in `weather`; the import API joins it using `weather_key`. Uploads are processed locally; temporary SQLite copies are removed after reading. Portfolio imports are session state and are not written into the source database. Saved actions use browser local storage; clearing that storage removes them.
+
+Multi-file uploads are held in local server memory for 30 minutes of inactivity. Each source may contain 5,000 rows and 10 MiB; each merge accepts 10 files, 30,000 source rows and 5,000 building/year records. Save a clean download to retain the merged result. The included three-file example reconstructs the 30-building public-data demo; its optional conflict fixture is clearly labeled intentionally altered test data.
 
 ## Files to use
 
@@ -44,6 +47,7 @@ SQLite uploads accept a flat `buildings` table using the CSV field names. The in
 | `docs/METHODOLOGY.md` | Every formula, parameter, normalization, policy choice, limitation, and worked example |
 | `docs/DATA_SOURCES.md` | Public dataset citations, exact joins, coverage, quality checks and reproducibility |
 | `docs/DEMO.md` | Short presentation and demonstration sequence |
+| `docs/MERGING_DATA.md` | Multiple-source upload, mapping, matching, conflict review and clean downloads |
 
 ## Model in brief
 
@@ -76,4 +80,4 @@ node scripts/export_scores.mjs
 
 The build uses checked-in, losslessly compressed snapshots and Python's standard library. Network access is needed only for an explicit source refresh through `python scripts/fetch_data.py`. Running the dashboard needs only Node. `npm run check` checks application syntax and runs the tests.
 
-Checks cover independent worked-example arithmetic for every class, score bounds, revenue monotonicity, directed dependencies, missing/invalid values, weather consistency, quoted CSVs, import parity, malformed request handling, path containment and all 2,976 SQLite/CSV records. Manual form tests use browser-compatible form controls and real HTTP requests against the app server to cover decimal values, errors, all six types, recalculation, imported references, reset, retry and late responses. Visual browser verification was limited by local preview access restrictions in the development environment.
+Checks cover independent worked-example arithmetic for every class, score bounds, revenue monotonicity, directed dependencies, missing/invalid values, weather consistency, quoted CSVs, import parity, malformed request handling, path containment and all 2,976 SQLite/CSV records. Manual form tests use browser-compatible form controls and real HTTP requests against the app server to cover decimal values, errors, all six types, recalculation, imported references, reset, retry and late responses. Multi-source tests cover identity/address matching, column mappings, unit transformations, shared-weather conflicts, explicit resolutions, audit lineage and CSV/JSON/SQLite export round trips, including the full 2,976-building portfolio. Visual browser verification was limited by local preview access restrictions in the development environment.

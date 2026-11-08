@@ -32,8 +32,8 @@ async function app(t, intercept, waitUntilReady=true) {
     const real=()=>fetch(new URL(url,base),{...options,headers:{...options.headers,Origin:base}});
     return intercept?intercept(url,options,real):real();
   };
-  const source=script.replace(/\ninit\(\);\s*$/,'\nwindow.nexusReady=init();');
-  w.eval(source+'\nwindow.manualTest={state,manualValues,loadManual};');if(waitUntilReady)await w.nexusReady;
+  const source=script.replace(/\ninit\(\);\s*$/,'\nwindow.appReady=init();');
+  w.eval(source+'\nwindow.manualTest={state,manualValues,loadManual};');if(waitUntilReady)await w.appReady;
   const d=w.document,form=d.querySelector('#assessment-form'),button=d.querySelector('#assess-button');
   const input=name=>form.elements.namedItem(name);
   function change(name,value,event='input'){input(name).value=String(value);input(name).dispatchEvent(new w.Event(event,{bubbles:true}));}
@@ -54,7 +54,7 @@ test('manual inputs are ready during configuration loading and typed values are 
   let release;const gate=new Promise(resolve=>release=resolve);
   const a=await app(t,async(url,options,real)=>{if(url==='/api/config')await gate;return real();},false);
   assert.equal(a.input('building_type').value,'Technology');a.change('building_age_years',45);
-  release();await a.w.nexusReady;assert.equal(a.input('building_age_years').value,'45');
+  release();await a.w.appReady;assert.equal(a.input('building_age_years').value,'45');
   await a.submit();assert.equal(a.h.state.manual.building.building_age_years,45);
 });
 

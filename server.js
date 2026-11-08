@@ -2,14 +2,26 @@ import http from 'node:http';
 import { readFile, writeFile, mkdir, unlink, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, createHash } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { MODEL_VERSION, WEIGHTS, PARAMETERS, scoreBuilding, scorePortfolio, ValidationError } from './src/risk.js';
 import { parseCSV, parseJSON } from './src/import.js';
+import {describeFragment,MERGE_FIELDS,mergeFragments} from './src/merge.js';
+import {exportMerge} from './src/merge-export.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(ROOT, 'public');
 const MAX_BYTES = 10 * 1024 * 1024;
+const fragments=new Map();
+const FRAGMENT_TTL=30*60*1000,MAX_FRAGMENT_MEMORY=80*1024*1024;
+function expireFragments(){for(const [id,file]of fragments)if(Date.now()-file.accessed>FRAGMENT_TTL)fragments.delete(id);}
+function fragmentSelection(spec){
+  expireFragments();
+  if(!Array.isArray(spec.files)||!spec.files.length||spec.files.length>10)throw new ValidationError(['Select 1–10 source files to merge.']);
+  if(spec.files.some(file=>!file||typeof file!=='object'||typeof file.id!=='string'||file.mapping!==undefined&&(!file.mapping||typeof file.mapping!=='object'||Array.isArray(file.mapping))))throw new ValidationError(['Every selected source must have an upload ID and a valid column mapping.']);
+  if(new Set(spec.files.map(f=>f?.id)).size!==spec.files.length)throw new ValidationError(['The same uploaded file cannot be selected twice.']);
+  return spec.files.map(selection=>{const file=fragments.get(selection.id);if(!file)throw new ValidationError(['An uploaded source has expired or the server restarted. Upload the files again.']);file.accessed=Date.now();return {...file,kind:selection.kind||describeFragment(file).kind,mapping:selection.mapping||describeFragment(file).mapping};});
+}
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '127.0.0.1';
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.csv': 'text/csv; charset=utf-8', '.md': 'text/plain; charset=utf-8', '.sqlite': 'application/vnd.sqlite3', '.db': 'application/vnd.sqlite3', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon' };
@@ -35,12 +47,17 @@ async function body(req) {
   if (!length) throw new ValidationError(['The uploaded file or request body is empty.']);
   return Buffer.concat(chunks);
 }
-function sqliteRows(file) {
+function sqliteRows(file,fragment=false) {
   const db = new DatabaseSync(file, { readOnly: true, enableLoadExtension: false });
   try {
     db.exec('PRAGMA trusted_schema=OFF; PRAGMA query_only=ON;');
     const table = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='buildings'").get();
-    if (!table) throw new ValidationError(['SQLite database must contain a buildings table using the template field names.']);
+    if (!table&&fragment){
+      const tables=db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all().map(t=>t.name);
+      const name=tables.includes('weather')?'weather':tables.length===1?tables[0]:null;
+      if(name)return db.prepare(`SELECT * FROM "${name.replaceAll('"','""')}" LIMIT 5001`).all();
+    }
+    if (!table) throw new ValidationError(['SQLite must contain a buildings table, a weather table, or one unambiguous data table.']);
     const columns = new Set(db.prepare('PRAGMA table_info(buildings)').all().map(c => c.name));
     const normalizedWeather = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='weather'").get();
     // Our normalized database stores station/year weather once, rather than duplicating it in each building.
@@ -50,16 +67,19 @@ function sqliteRows(file) {
     return rows.map(r => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, typeof v === 'bigint' ? Number(v) : v])));
   } finally { db.close(); }
 }
-async function importRows(buffer, filename) {
+async function importRows(buffer, filename,fragment=false) {
   const ext = path.extname(filename).toLowerCase();
   if (ext === '.csv') return parseCSV(buffer.toString('utf8'));
-  if (ext === '.json') return parseJSON(buffer.toString('utf8'));
+  if (ext === '.json') {
+    if(fragment){let data;try{data=JSON.parse(buffer.toString('utf8').replace(/^\uFEFF/,''));}catch{throw new ValidationError(['The JSON file is not valid JSON.']);}const rows=Array.isArray(data)?data:data?.buildings||data?.rows||data?.records||data?.weather;if(!Array.isArray(rows))throw new ValidationError(['JSON must contain an array, or a buildings, rows, records or weather array.']);return rows;}
+    return parseJSON(buffer.toString('utf8'));
+  }
   if (['.sqlite', '.sqlite3', '.db'].includes(ext)) {
     if (buffer.subarray(0, 16).toString('binary') !== 'SQLite format 3\u0000') throw new ValidationError(['File is not a SQLite 3 database.']);
     const folder = path.join(ROOT, 'work', 'uploads'); await mkdir(folder, { recursive: true });
     const file = path.join(folder, `${randomUUID()}.sqlite`);
     await writeFile(file, buffer);
-    try { return sqliteRows(file); }
+    try { return sqliteRows(file,fragment); }
     catch (error) { if (error instanceof ValidationError) throw error; throw new ValidationError([`Could not read the SQLite buildings table: ${error.message}`]); }
     finally { await unlink(file).catch(() => {}); }
   }
@@ -94,6 +114,22 @@ const server = http.createServer(async (req, res) => {
         const rows = await importRows(await body(req), filename);
         return json(res, 200, { ...scorePortfolio(rows, ctx.benchmarks), sources: ctx.sources, benchmarks: ctx.benchmarks, imported: filename });
       }
+      if(req.method==='POST'&&url.pathname==='/api/fragments'){
+        const name=String(url.searchParams.get('filename')||'').slice(0,240),buffer=await body(req),rows=await importRows(buffer,name,true);
+        if(!rows.length||rows.length>5000)throw new ValidationError(['Each fragmented dataset must contain 1–5,000 rows.']);
+        expireFragments();const bytes=Buffer.byteLength(JSON.stringify(rows));
+        if(fragments.size>=50||[...fragments.values()].reduce((n,f)=>n+f.bytes,0)+bytes>MAX_FRAGMENT_MEMORY)throw new ValidationError(['The local upload workspace is full. Remove unused source files or restart the local server.']);
+        const file={id:randomUUID(),name,rows,bytes,sha256:createHash('sha256').update(buffer).digest('hex'),accessed:Date.now()};fragments.set(file.id,file);
+        return json(res,200,{file:describeFragment(file),fields:MERGE_FIELDS,expires_in_minutes:30});
+      }
+      if(req.method==='DELETE'&&url.pathname.startsWith('/api/fragments/')){fragments.delete(url.pathname.slice('/api/fragments/'.length));return json(res,200,{removed:true});}
+      if(req.method==='POST'&&['/api/merge','/api/merge/export'].includes(url.pathname)){
+        const spec=parseSingle(await body(req));if(!spec||typeof spec!=='object')throw new ValidationError(['A merge configuration is required.']);
+        const files=fragmentSelection(spec),report=mergeFragments(files,{defaultYear:spec.defaultYear,resolutions:spec.resolutions||{},benchmarks:ctx.benchmarks});
+        if(url.pathname==='/api/merge')return json(res,200,report);
+        const result=await exportMerge(report,files,spec.format,path.join(ROOT,'work','exports'),spec.defaultYear??2023);
+        res.writeHead(200,{'Content-Type':result.type,'Content-Disposition':`attachment; filename="${result.name}"`,'Content-Length':result.body.length,'Cache-Control':'no-store'});return res.end(result.body);
+      }
       return json(res, 404, { error: 'API endpoint not found.' });
     }
     if (req.method !== 'GET' && req.method !== 'HEAD') return json(res, 405, { error: 'Method not allowed.' });
@@ -119,4 +155,4 @@ function parseSingle(buffer) {
   try { return JSON.parse(buffer.toString('utf8')); }
   catch { throw new ValidationError(['Request must contain valid JSON.']); }
 }
-server.listen(PORT, HOST, () => console.log(`NEXUS Property Intelligence\nLocal: http://${HOST}:${PORT}\nModel: ${MODEL_VERSION}`));
+server.listen(PORT, HOST, () => console.log(`Riskalytics Property Intelligence\nLocal: http://${HOST}:${PORT}\nModel: ${MODEL_VERSION}`));

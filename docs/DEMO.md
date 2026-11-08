@@ -44,6 +44,8 @@ Upload the included CSV or JSON sample and show scores for all valid rows. Intro
 
 ## Closing
 
+Before closing, demonstrate the in-app fragmented-data workflow: click **Upload datasets → Load merge example → Merge & calculate risk**. The register, utilities and weather files should produce 30 ready building records. Click **Add conflict example** and recalculate to flag the intentionally altered hot-day count for all 30 buildings. Choose the source-backed value of 12, apply choices and recalculate, then use the merged portfolio and download SQLite. Explain that the conflict fixture is synthetic test data and that the three baseline fragments are prepared splits of the retained public-data demo. See [MERGING_DATA.md](MERGING_DATA.md) for the exact matching and audit behavior.
+
 "The useful result is a prioritized list with a reason, a traceable input and a suggested investigation. Real deployment replaces annual proxies with verified equipment telemetry and maintenance records, then validates the policy against observed failures."
 
 The demo sends no messages, issues no external work orders and changes no building controls.
